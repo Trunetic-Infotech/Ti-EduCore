@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native";
 import { Link } from "expo-router";
@@ -7,6 +7,20 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const login = () => {
   const [checked, setChecked] = useState(false);
+  const [email,setemail] = useState("")
+   const [password,setpassword] = useState('')
+
+   useEffect(() => {
+    console.log (email)
+
+   },[email])
+
+    useEffect(() => {
+    console.log (password)
+
+   },[password])
+
+   
   return (
     <SafeAreaView>
       <View className="h-[100%]">
@@ -28,14 +42,19 @@ const login = () => {
             Login
           </Text>
           <TextInput
+
+           value={email}
+            onChangeText={setemail}
             className="bg-gray-100 rounded-xl w-[300px] placeholder:text-center placeholder:font-bold shadow"
             placeholder="Enter Your Email"
             keyboardType="email-address"
           />
           <TextInput
+          value={Number}
+          onChangeText={setpassword}
             className="bg-gray-100 rounded-xl w-[300px] placeholder:text-center shadow placeholder:font-bold"
             placeholder="Enter Your Password"
-            keyboardType="numeric"
+            keyboardType="number-pad"
           />
 
           <View className="flex-row w-[300px] justify-between ">

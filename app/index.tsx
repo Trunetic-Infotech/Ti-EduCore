@@ -11,7 +11,7 @@ export default function Index() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/forgotpassword');
+      router.push('/login');
     }, 2000); // 2000ms = 2 seconds
 
     return () => clearTimeout(timer); // Cleanup on unmount
