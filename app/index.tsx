@@ -14,10 +14,16 @@ export default function Index() {
     const timer = setTimeout(() => {
       router.push("/components/teacher/teachersdashboard");
     }, 3000);
-
     return () => clearTimeout(timer); // ✅ Cleanup on unmount
   }, []); // ✅ Only run once
 
+  // // useEffect(() => {
+  // //   const timer = setTimeout(() => {
+  // //     router.push('/forgotpassword');
+  // //   }, 2000); // 2000ms = 2 seconds
+
+  //   return () => clearTimeout(timer); // Cleanup on unmount
+  // }, []);
   return (
     <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
     <View className="bg-gray-200 items-center justify-center h-full relative">
@@ -43,7 +49,7 @@ export default function Index() {
           </View>
           <View className="items-center gap-3">
             
-            <TouchableOpacity className="bg-gray-200 rounded-md p-4 w-full">
+            <TouchableOpacity  className="bg-gray-200 rounded-md p-4 w-full">
               <Text className="text-xl text-center  font-semibold text-[#305495] ">Teacher</Text>
             </TouchableOpacity>
             <TouchableOpacity className="bg-gray-200 rounded-md p-4 w-full">
