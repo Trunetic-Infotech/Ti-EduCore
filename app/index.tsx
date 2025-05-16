@@ -9,13 +9,32 @@ export default function Index() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
+
+  //dashboard teacher
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+
+  //     router.push("/components/teacher/teachersdashboard");
+  //   }, 3000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
+
+// login function
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/login');
+   router.push('/login');
     }, 2000); // 2000ms = 2 seconds
+    return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  }, []); // ✅ Only run once
 
-    return () => clearTimeout(timer); // Cleanup on unmount
-  }, []);
+  //forget password
+  // // useEffect(() => {
+  // //   const timer = setTimeout(() => {
+  // //     router.push('/forgotpassword');
+  // //   }, 2000); // 2000ms = 2 seconds
+
+  //   return () => clearTimeout(timer); // Cleanup on unmount
+  // }, []);
   return (
     <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
     <View className="bg-gray-200 items-center justify-center h-full relative">
