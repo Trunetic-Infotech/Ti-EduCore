@@ -41,7 +41,7 @@ export default function Index() {
           </View>
           <View className="items-center gap-3">
             
-            <TouchableOpacity className="bg-gray-200 rounded-md p-4 w-full">
+            <TouchableOpacity  className="bg-gray-200 rounded-md p-4 w-full">
               <Text className="text-xl text-center  font-semibold text-[#305495] ">Teacher</Text>
             </TouchableOpacity>
             <TouchableOpacity className="bg-gray-200 rounded-md p-4 w-full">
