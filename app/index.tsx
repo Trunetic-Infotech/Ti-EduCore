@@ -8,16 +8,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Index() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push('/login');
-    }, 2000); // 2000ms = 2 seconds
-
-    return () => clearTimeout(timer); // Cleanup on unmount
-  }, []);
-  
   return (
     <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
     <View className="bg-gray-200 items-center justify-center h-full relative">
