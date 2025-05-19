@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const Header = ({ title = "Teacher Dashboard", onMenuPress }) => {
+const Header = ({ title, onMenuPress }) => {
   return (
     <View className="flex-row items-center justify-between bg-[#305495] p-5 shadow-md">
       {/* Menu on the left */}
