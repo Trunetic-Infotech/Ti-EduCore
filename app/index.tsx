@@ -19,13 +19,24 @@ export default function Index() {
   //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
   // }, []); // ✅ Only run once
 
+
+   //Parent Dashboard
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+
+  //     router.push("/components/parents/screens/feesbilling/payfees");
+  //   }, 3000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
+
+
 // login function
-  useEffect(() => {
-    const timer = setTimeout(() => {
-   router.push('/login');
-    }, 2000); // 2000ms = 2 seconds
-    return () => clearTimeout(timer); // ✅ Cleanup on unmount
-  }, []); // ✅ Only run once
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //  router.push('/login');
+  //   }, 2000); // 2000ms = 2 seconds
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
 
   //forget password
   // // useEffect(() => {
