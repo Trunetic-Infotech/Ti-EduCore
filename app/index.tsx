@@ -20,13 +20,13 @@ export default function Index() {
 
 
    //Parent Dashboard
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
 
-  //     router.push("/components/parents/screens/feesbilling/payfees");
-  //   }, 3000);
-  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
-  // }, []); // ✅ Only run once
+      router.push("/components/parents/parentsdashboard");
+    }, 3000);
+    return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  }, []); // ✅ Only run once
 
 
 // login function
