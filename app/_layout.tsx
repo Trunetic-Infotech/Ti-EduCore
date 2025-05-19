@@ -7,6 +7,7 @@ import "../global.css"
 export default function RootLayout() {
   return (
     <Provider store={store}> {/* ✅ Wrap everything with Provider */}
+    
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }} />
       </SafeAreaProvider>

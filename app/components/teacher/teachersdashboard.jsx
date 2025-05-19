@@ -5,6 +5,7 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
+  ScrollView,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,7 +28,6 @@ import Uploadmerks from "./screens/results/uploadmerks";
 import Uploadpaperpdf from "./screens/results/uploadpaperpdf";
 import Verifymerks from "./screens/results/verifymerks";
 import Salarylist from "./screens/salary/salarylist";
-import Studentlist from "./screens/student/studentslist";
 import Studentsproblem from "./screens/studentsrequest/studentsproblem";
 import Studentsquestions from "./screens/studentsrequest/studentsquestions";
 import Allhomeworklist from "./screens/studyMaterial/allhomeworklist";
@@ -323,6 +323,7 @@ const TeachersDashboard = () => {
       {isOpen && (
         <View className="absolute left-0 bottom-0 top-12 h-full w-[70%] bg-[#7b9cdb] p-4 shadow-lg z-50 flex flex-col justify-between">
           {/* Close button */}
+          <ScrollView>
           <View className="items-end mb-4">
             <AntDesign
               onPress={() => setIsOpen(false)}
@@ -337,19 +338,13 @@ const TeachersDashboard = () => {
             <Text className="text-xl font-semibold text-black mb-4">
               Teacher Menus
             </Text>
-            <TouchableOpacity
-              className="bg-gray-200 p-3 rounded-md mb-3"
-              onPress={() => {
-                setSelectedComponent(Home);
-                setIsOpen(false);
-              }}
-            >
-              <View>
-                <Text className="text-black font-semibold text-center">
-                  Home
-                </Text>
-              </View>
-            </TouchableOpacity>
+     <TouchableOpacity
+        className="bg-gray-200 p-3 rounded-md mb-3"
+        onPress={() => setSelectedComponent(<Home />)}
+      >
+        <Text className="text-black font-semibold text-center">Home</Text>
+      </TouchableOpacity>
+
 
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
@@ -711,6 +706,7 @@ const TeachersDashboard = () => {
               </Text>
             </View>
           </TouchableOpacity>
+        </ScrollView>
         </View>
       )}
     </SafeAreaView>
