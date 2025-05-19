@@ -106,7 +106,7 @@ const studentsdashboard = () => {
                 />
               </View>
             )}
-            // Results
+            {/* Student Attendance Toggle Button */}
             <TouchableOpacity
               onPress={() =>
                 setActiveSection(activeSection === "results" ? null : "results")
