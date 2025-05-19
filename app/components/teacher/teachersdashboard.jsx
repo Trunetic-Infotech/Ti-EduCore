@@ -350,7 +350,7 @@ const TeachersDashboard = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-
+  
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
