@@ -12,7 +12,7 @@ export default function Index() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/components/teacher/teachersdashboard");
+      router.push("/components/driver/screens/profiles/driverprofile");
     }, 3000);
     return () => clearTimeout(timer); // ✅ Cleanup on unmount
   }, []); // ✅ Only run once
