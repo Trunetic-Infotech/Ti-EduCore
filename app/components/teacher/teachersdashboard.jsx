@@ -338,22 +338,6 @@ const TeachersDashboard = () => {
             <Text className="text-xl font-semibold text-black mb-4">
               Teacher Menus
             </Text>
-<<<<<<< HEAD
-            <TouchableOpacity
-              className="bg-gray-200 p-3 rounded-md mb-3"
-              onPress={() => {
-                setSelectedComponent(Home);
-                setIsOpen(false);
-              }}
-            >
-              <View>
-                <Text className="text-black font-semibold text-center">
-                  Home
-                </Text>
-              </View>
-            </TouchableOpacity>
-  
-=======
      <TouchableOpacity
         className="bg-gray-200 p-3 rounded-md mb-3"
         onPress={() => setSelectedComponent(<Home />)}
@@ -362,7 +346,6 @@ const TeachersDashboard = () => {
       </TouchableOpacity>
 
 
->>>>>>> 24e71b2e77c84f4fcec7f9edbdc57c84210e3b0c
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
