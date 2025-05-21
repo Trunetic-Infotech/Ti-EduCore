@@ -11,8 +11,9 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "nativewind-env.d.ts",
+    "app/components/driver/driverdashboard.jsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "nativewind-env.d.ts"
-, "app/components/driver/driverdashboard.jsx"  ]
+    "expo-env.d.ts"
+  ]
 }

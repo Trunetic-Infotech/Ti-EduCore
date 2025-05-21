@@ -1,10 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
-import React, { useState } from "react";
 import CardCoponets from "../commanComponents/CardCoponets";
-import Profile from "./screens/profile/profile";
-import { useRouter } from "expo-router";
+
 const home = () => {
-  const router = useRouter();
 
   return (
     <ScrollView>

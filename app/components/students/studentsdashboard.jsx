@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import Header from "./../commanComponents/header";
-import Home from "./screens/home/Home";
+import Home from "../students/screens/home/home";
 import Profile from "./screens/profile/Profile";
 import Homework from "./screens/studyMaterial/Homework";
 import SubmitHomework from "./screens/studyMaterial/SubmitHomework";
