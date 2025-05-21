@@ -107,14 +107,6 @@ const TeachersDashboard = () => {
     },
     {
       id: "3",
-      name: "Study Material",
-      subitem: {
-        key: "studyMaterial",
-        component: <Allhomeworklist />,
-      },
-    },
-    {
-      id: "4",
       name: "All video Leacture",
       subitem: {
         key: "allvideoLeacture",
@@ -122,7 +114,7 @@ const TeachersDashboard = () => {
       },
     },
     {
-      id: "5",
+      id: "4",
       name: "Create Subject",
       subitem: {
         key: "createsubject",
@@ -130,7 +122,7 @@ const TeachersDashboard = () => {
       },
     },
     {
-      id: "6",
+      id: "5",
       name: "Upload Homework",
       subitem: {
         key: "uploadhomework",
@@ -138,7 +130,7 @@ const TeachersDashboard = () => {
       },
     },
     {
-      id: "7",
+      id: "6",
       name: "Upload Notes",
       subitem: {
         key: "uploadnotes",
@@ -146,7 +138,7 @@ const TeachersDashboard = () => {
       },
     },
     {
-      id: "8",
+      id: "7",
       name: "Upload Video Leacture",
       subitem: {
         key: "uploadvideoleacture",
@@ -236,7 +228,7 @@ const TeachersDashboard = () => {
     },
     {
       id: "2",
-      name: "Events",
+      name: "Events List",
       subitem: {
         key: "allevents",
         component: <ALlevents />,
@@ -314,7 +306,7 @@ const TeachersDashboard = () => {
         ) : (
           // Default content
           <View>
-            <Home />
+            <Createresult />
           </View>
         )}
       </View>

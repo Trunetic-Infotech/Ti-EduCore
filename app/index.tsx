@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+<<<<<<< HEAD
 // import "./components/driver/driverdashboard"
+=======
+// import "./components/teacher/teachersdashboard"
+>>>>>>> d66bcf6566955b7652385c7597d2f1efba19b43f
 
 export default function Index() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +23,15 @@ export default function Index() {
     return () => clearTimeout(timer); // ✅ Cleanup on unmount
   }, []); // ✅ Only run once
 
+
+    //dashboard teacher
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+
+  //     router.push('../components/teacher/teachersdashboard');
+  //   }, 2000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
   // login function
   // ✅ Only run once
 
