@@ -1,35 +1,58 @@
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import React, { useState } from "react";
+import { BackHandler, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import Header from "./../commanComponents/header";
+import Driverprofile from "./screens/profiles/driverprofile";
+import Viewdetails from "./screens/busdetails/viewdetails"
+import Studentlist from "./screens/list/studentlist"
 
   const driverdashboard= ()=>  {
      const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState(null);
 
-  const TeacherMap = [
-    { id: "1", name: "Alice Johnson" },
-    { id: "2", name: "Bob Smith" },
-    { id: "3", name: "Charlie Brown" },
-    { id: "4", name: "David Wilson" },
-  ];
+  useEffect(() => {
+    const backAction = () => {
+      if (selectedComponent) {
+        setSelectedComponent(null); // go back to dashboard
+        return true; // prevent default back behavior
+      }
+      return false; // allow default behavior (exit screen)
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [selectedComponent]);
+
+    
   
+
     return (
-        <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
+    <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
       {/* Custom Header */}
       <Header title="Driver Dashboard" onMenuPress={() => setIsOpen(true)} />
       {/* Page Content */}
-      <View className="p-4">
-        <Text className="text-lg text-gray-700">
-          Welcome to the driver dashboard. Use the menu to navigate.
-        </Text>
+      <View className="p-4 flex-1">
+        {selectedComponent ? (
+          selectedComponent
+        ) : (
+          // Default content
+          <View>
+            <Driverprofile />
+          </View>
+        )}
       </View>
 
       {/* Side Menu */}
       {isOpen && (
         <View className="absolute left-0 bottom-0 top-12 h-full w-[70%] bg-[#7b9cdb] p-4 shadow-lg z-50 flex flex-col justify-between">
           {/* Close button */}
+          <ScrollView>
           <View className="items-end mb-4">
             <AntDesign
               onPress={() => setIsOpen(false)}
@@ -42,263 +65,57 @@ import Header from "./../commanComponents/header";
           {/* Main menu options */}
           <View className="flex-grow">
             <Text className="text-xl font-semibold text-black mb-4">
-              Teacher Menus
+              Driver Menus
             </Text>
-            <TouchableOpacity className="bg-gray-200 p-3 rounded-md mb-3">
-              <Text className="text-black font-semibold text-center">
-                Teacher Profile
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="bg-gray-200 p-3 rounded-md mb-3">
-              <Text className="text-black font-semibold text-center">
-                Student Lists
-              </Text>
-            </TouchableOpacity>
-            {/* Student Attendance Toggle Button */}
+     <TouchableOpacity
+        className="bg-gray-200 p-3 rounded-md mb-3"
+        onPress={() => setSelectedComponent(<Driverprofile />)}
+      >
+        <Text className="text-black font-semibold text-center">Profile</Text>
+      </TouchableOpacity>
+
+
             <TouchableOpacity
-              onPress={() =>
-                setActiveSection(
-                  activeSection === "attendance" ? null : "attendance"
-                )
-              }
               className="bg-gray-200 p-3 rounded-md mb-3"
+              onPress={() => {
+                setSelectedComponent(Viewdetails);
+                setIsOpen(false);
+              }}
             >
-              <Text className="text-black font-semibold text-center">
-                Student Attendance
-              </Text>
-            </TouchableOpacity>
-            {activeSection === "attendance" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
+              <View>
+                <Text className="text-black font-semibold text-center">
+                  Bus Details
+                </Text>
               </View>
-            )}
-            {/* Student Attendance Toggle Button */}
+            </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
-                setActiveSection(
-                  activeSection === "studyMaterial" ? null : "studyMaterial"
-                )
-              }
+              onPress={() => {
+                setSelectedComponent(Studentlist);
+                setIsOpen(false);
+              }}
               className="bg-gray-200 p-3 rounded-md mb-5"
             >
-              <Text className="text-black font-semibold text-center">
-                Study Material
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "studyMaterial" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
+              <View>
+                <Text className="text-black font-semibold text-center">
+                  Students List
+                </Text>
               </View>
-            )}
-            // Results
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(activeSection === "results" ? null : "results")
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                Results
-              </Text>
             </TouchableOpacity>
-            {activeSection === "results" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-            {/* Student Attendance Toggle Button */}
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(
-                  activeSection === "progress" ? null : "progress"
-                )
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                Progress
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "progress" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-            {/* Student Attendance Toggle Button */}
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(
-                  activeSection === "studentsRequest" ? null : "studentsRequest"
-                )
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                See Students Request
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "studentsRequest" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-            {/* Student Attendance Toggle Button */}
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(activeSection === "salary" ? null : "salary")
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                Salary
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "salary" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-            {/* Student Attendance Toggle Button */}
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(activeSection === "leaves" ? null : "leaves")
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                Leaves
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "leaves" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-            {/* Student Attendance Toggle Button */}
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(activeSection === "events" ? null : "events")
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                Events
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "events" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-            {/* Student Attendance Toggle Button */}
-            <TouchableOpacity
-              onPress={() =>
-                setActiveSection(
-                  activeSection === "complaints" ? null : "complaints"
-                )
-              }
-              className="bg-gray-200 p-3 rounded-md mb-3"
-            >
-              <Text className="text-black font-semibold text-center">
-                Complaints
-              </Text>
-            </TouchableOpacity>
-            {/* Student List */}
-            {activeSection === "complaints" && (
-              <View className="bg-gray-100 p-3 rounded-md">
-                <FlatList
-                  data={TeacherMap}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-[#e3eaf7] rounded-lg p-4 mb-3">
-                      <Text className="text-lg text-black">{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
           </View>
 
           {/* Logout fixed at bottom */}
           <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4">
-            <Text className="text-black font-semibold text-center">Logout</Text>
+            <View>
+              <Text className="text-black font-semibold text-center">
+                Logout
+              </Text>
+            </View>
           </TouchableOpacity>
+        </ScrollView>
         </View>
       )}
     </SafeAreaView>
-      
-    
-    );
+    )
   };
 
 
