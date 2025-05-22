@@ -8,7 +8,7 @@ import {
   ScrollView,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from "./../commanComponents/header";
 import Home from "./home";
 import AllAttendanceList from "./screens/attendance/allattendancelist";
@@ -306,7 +306,7 @@ const TeachersDashboard = () => {
         ) : (
           // Default content
           <View>
-            <Createresult />
+            <Home />
           </View>
         )}
       </View>
