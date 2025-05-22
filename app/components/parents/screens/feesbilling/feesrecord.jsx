@@ -2,6 +2,15 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 
 const feesrecord = () => {
+
+  const students = [
+    { id: '1', name: 'Asad Shaikh', class: '1', date: '25/02/25', feesamount: '15,000'},
+    { id: '2', name: 'Pooja Verma', class: '2', date: '25/02/25', feesamount: '15,000' },
+    { id: '3', name: 'Rahul Kumar', class: '3', date: '25/02/25', feesamount: '15,000' },
+    { id: '4', name: 'Sneha Patil', class: '4', date: '25/02/25', feesamount: '15,000' },
+    { id: '5', name: 'Anjali Singh', class: '5', date: '25/02/25', feesamount: '15,000' },
+    { id: '6', name: 'Rohit Sharma', class: '6', date: '25/02/25', feesamount: '15,000' },
+  ];
   return (
     <View className="p-4 bg-gray-100 min-h-full">
       {/* Search Input */}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+// import "./components/driver/driverdashboard"
 
 export default function Index() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,14 +33,25 @@ export default function Index() {
 // login function
   // useEffect(() => {
   //   const timer = setTimeout(() => {
-  //  router.push('/login');
-  //   }, 2000); // 2000ms = 2 seconds
+
+  //     router.push('/components/students/studentsdashboard');
+  //   }, 2000);
   //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
   // }, []); // ✅ Only run once
 
+
+    //dashboard teacher
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+
+  //     router.push('../components/teacher/teachersdashboard');
+  //   }, 2000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
   // login function
   // ✅ Only run once
 
+  
   //forget password
   // // useEffect(() => {
   // //   const timer = setTimeout(() => {
@@ -48,6 +60,10 @@ export default function Index() {
 
   //   return () => clearTimeout(timer); // Cleanup on unmount
   // }, []);
+
+
+  
+
   return (
     <SafeAreaView className="flex-1" edges={["top", "bottom"]}>
       <View className="bg-gray-200 items-center justify-center h-full relative">

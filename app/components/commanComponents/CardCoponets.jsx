@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-const CardCoponets = ({ name, className, data }) => {
+const CardCoponets = ({ onPress,name, className, data }) => {
   return (
-    <View
+    <TouchableOpacity
+    onPress={onPress}
       className={`bg-[#F5F1F1] border border-[#305495] items-center justify-center p-4 rounded-xl ${className || ''}`}
       style={[styles.box, { minHeight: 90 }]}
     >
@@ -13,7 +14,7 @@ const CardCoponets = ({ name, className, data }) => {
         </Text>
       ) : null}
       <Text className="text-xl font-bold text-center">{name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
