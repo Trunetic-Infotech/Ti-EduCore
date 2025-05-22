@@ -39,10 +39,12 @@ import Uploadnotes from "./screens/studyMaterial/uploadnotes";
 import Uploadvideoleacture from "./screens/studyMaterial/uploadvideoleacture";
 import Studentslist from "./screens/student/studentslist";
 import Profile from "./screens/profile/profile";
+
 const TeachersDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+
 
   useEffect(() => {
     const backAction = () => {
@@ -295,6 +297,7 @@ const TeachersDashboard = () => {
     },
   ];
 
+   useEffect
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
       {/* Custom Header */}

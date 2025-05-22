@@ -2,13 +2,14 @@ import { View, Text, ScrollView } from "react-native";
 import CardCoponets from "../commanComponents/CardCoponets";
 import TimeTable from './screens/timetable/timetable';
 import HomeWorks from "./screens/homework/homeWorks";
+// import { useSelector } from "react-redux";
 
 const home = () => {
-
+  // const user = useSelector((state) => state.auth.user);
   return (
     <ScrollView>
       <View className="w-full gap-4">
-        <CardCoponets name="Pooja" />
+        <CardCoponets name="{user.name}" />
 
         {/* Wrap grid */}
         <View className="flex-row flex-wrap justify-between mt-4 gap-2">

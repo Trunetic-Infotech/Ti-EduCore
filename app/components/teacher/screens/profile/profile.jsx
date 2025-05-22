@@ -1,16 +1,19 @@
 import { View, Text, Image, FlatList, ScrollView } from 'react-native'
-import React from 'react'
+import React, { use } from 'react'
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
 
+  const user =useSelector((state) => state.auth.user);
+
   const data = [
     {
-      label: "Student Roll No",
-      value: "101",
+      label: "Teacher Id",
+      value: user ? user.teacher_id : "Loading...",
     },
     {
-      label: "Student Name",
-      value: "Asad Shaikh",
+      label: "Teacher Name",
+      value: user ? user.teacher_Name : "Loading...",
     },
     {
       label: "Contact No.",
@@ -69,7 +72,7 @@ const Profile = () => {
       ListHeaderComponent={
         <View className='p-2'>
           <View className='items-center m-2'>
-            <Text className="text-2xl font-bold text-[#305495]">Student Profile</Text>
+            <Text className="text-2xl font-bold text-[#305495]">Teacher Profile</Text>
           </View>
 
           <View className='items-center gap-2 mb-4'>

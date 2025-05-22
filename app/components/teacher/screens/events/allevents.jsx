@@ -33,7 +33,7 @@ const allevents = () => {
           className="bg-white p-4 mb-4 rounded-2xl shadow-sm border border-gray-200"
         >
           {/* Card */}
-          <View className="bg-white rounded-xl shadow-md p-4 space-y-3">
+         
 
             <View className="flex-row justify-between">
               <Text className="text-gray-500 font-medium">Event Name</Text>
@@ -55,11 +55,11 @@ const allevents = () => {
               <Text className="font-semibold text-yellow-600">{item.description}</Text>
             </View>
             <TouchableOpacity className="mt-4 bg-[#f1a621] rounded-xl gap-2 py-2 px-4 items-center flex-row justify-center space-x-2">
-              <Text className="text-white font-bold">View Receipt </Text>
+              <Text className="text-white font-bold">View Event Image </Text>
               <Entypo name="eye" size={24} color="white" />
             </TouchableOpacity>
           </View>
-        </View>
+    
       ))}
 
 

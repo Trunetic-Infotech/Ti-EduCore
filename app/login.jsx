@@ -31,6 +31,8 @@ const login = () => {
       return;
     }else{
       try { 
+        console.log(API_URL);
+        
         const response = await axios.post(`${API_URL}/admin/login`,
           {email, password, Role: role}
           ,{ headers: { "Content-Type": "application/json" }})

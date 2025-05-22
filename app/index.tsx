@@ -11,13 +11,13 @@ export default function Index() {
   const router = useRouter();
 
   //dashboard teacher
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
 
-      router.push('./components/teacher/teachersdashboard');
-    }, 2000);
-    return () => clearTimeout(timer); // ✅ Cleanup on unmount
-  }, []); // ✅ Only run once
+  //     router.push('./components/teacher/teachersdashboard');
+  //   }, 2000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
 
 
     //dashboard teacher
@@ -31,6 +31,15 @@ export default function Index() {
   // login function
   // ✅ Only run once
 
+
+  // //forget password
+  //  useEffect(() => {
+  //    const timer = setTimeout(() => {
+  //      router.push('/login');
+  //   }, 2000); // 2000ms = 2 seconds
+
+  //   return () => clearTimeout(timer); // Cleanup on unmount
+  // }, []);
   
   //forget password
   // // useEffect(() => {
