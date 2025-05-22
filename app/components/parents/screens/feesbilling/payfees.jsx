@@ -1,70 +1,116 @@
-import { View, Text, TouchableOpacity,StyleSheet } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { TextInput } from "react-native";
-
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+// import * as DocumentPicker from "expo-document-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const payfees = () => {
-  return (
-    <SafeAreaView>
-    
-    <View className='items-center justify-center rounded-xl'>
+  const [date, setDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-        <View className="p-4 items-center  gap-10 w-[90vw] bg-[#dad6d6]" style={styles.box}>
-        <Text className="text-[#305495] text-2xl text-center font-bold text-shadow">
+  const onChange = (event, selectedDate) => {
+    setShowPicker(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
+  };
+
+  // const pickDocument = async () => {
+  //   const result = await DocumentPicker.getDocumentAsync({});
+  //   if (result.type === "success") {
+  //     console.log("Selected file:", result.uri);
+  //     setSelectedFile(result.name);
+  //   }
+  // };
+
+  return (
+    <View className="flex-1 bg-gray-100 p-4">
+      <View className="bg-white border-2 border-[#305495] rounded-2xl p-5 space-y-5 shadow-md">
+        <Text className="text-center text-2xl font-bold text-[#305495]">
           Pay Fees
         </Text>
 
-        <View className="gap-1">
-          <Text className='text-xl text-center font-bold'>Student Name</Text>
-          <TextInput
-            keyboardType="text"
-            placeholder="Enter Your Name"
-            className="bg-white w-[50vw] border-2  border-[#305495] rounded-xl placeholder:text-center"
-          />
+        <View className="space-y-4">
+          <View>
+            <Text className="font-semibold text-gray-700 mb-1">Student Name</Text>
+            <TextInput
+              className="border border-[#305495] rounded-lg p-3 bg-white"
+              placeholder="Enter Class Name"
+            />
+          </View>
+
+          <View>
+            <Text className="font-semibold text-gray-700 mb-1">
+              Student ID
+            </Text>
+            <TextInput
+              className="border border-[#305495] rounded-lg p-3 bg-white"
+              placeholder="Enter Student ID"
+            />
+          </View>
+
+          <View>
+            <Text className="font-semibold text-gray-700 mb-1">
+              Fees Amount
+            </Text>
+            <TextInput
+              className="border border-[#305495] rounded-lg p-3 bg-white"
+              placeholder="Enter Amount"
+            />
+          </View>
+
+          {/* <View>
+            <Text className="font-semibold text-gray-700 mb-1">
+              Upload Attendance Sheet
+            </Text>
+            <TouchableOpacity
+              // onPress={pickDocument}
+              className="border border-[#305495] rounded-lg p-3 bg-gray-50"
+            >
+              <Text className="text-gray-700">
+                {selectedFile ? selectedFile : "Tap to select file"}
+              </Text>
+            </TouchableOpacity>
+          </View> */}
+
+          <View>
+            <Text className="font-semibold text-gray-700 mb-1">Date</Text>
+            <TouchableOpacity
+              onPress={() => setShowPicker(true)}
+              className="border border-[#305495] rounded-lg p-3 bg-gray-50"
+            >
+              <Text className="text-gray-700">{date.toDateString()}</Text>
+            </TouchableOpacity>
+            {showPicker && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                display="default"
+                onChange={onChange}
+              />
+            )}
+          </View>
+
+          {/* <View>
+            <Text className="font-semibold text-gray-700 mb-1">
+              Description
+            </Text>
+            <TextInput
+              className="border border-[#305495] rounded-lg p-3 bg-white"
+              placeholder="Enter Description"
+              multiline
+              numberOfLines={4}
+              style={{ minHeight: 100, textAlignVertical: "top" }}
+            />
+          </View> */}
         </View>
 
-        <View className="gap-1">
-          <Text className='text-xl text-center font-bold'>Student ID</Text>
-          <TextInput
-            keyboardType="text"
-            placeholder="Enter Your Name"
-            className="bg-white w-[50vw] border-2  border-[#305495] rounded-xl placeholder:text-center"
-          />
-        </View>
-
-        <View className="gap-1">
-          <Text className='text-xl text-center font-bold'>Fees Amount</Text>
-          <TextInput
-            keyboardType="text"
-            placeholder="Enter Your Name"
-            className="bg-white w-[50vw] border-2  border-[#305495] rounded-xl placeholder:text-center"
-          />
-        </View>
-
-        <View className="gap-1">
-          <Text className='text-xl text-center font-bold' >Date</Text>
-          <TextInput
-            keyboardType="text"
-            placeholder="Enter Your Name"
-            className="bg-white w-[50vw] border-2  border-[#305495] rounded-xl placeholder:text-center"
-          />
-        </View>
-
-        <TouchableOpacity>
-          <Text className='px-5 py-3 bg-[#305495] rounded-full' style={styles.box} >Pay</Text>
+        <TouchableOpacity className="bg-[#30549595] rounded-xl py-3 mt-3 items-center">
+          <Text className="text-white font-bold text-lg">Pay</Text>
         </TouchableOpacity>
       </View>
     </View>
-    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  box: {
-    // boxShadow: '0px 8px 6px rgba(48, 84, 149, 0.2)'
-    boxShadow: '-6px 10px 15px rgba(48, 84, 149, 0.2),6px 10px 15px rgba(48, 84, 149, 0.2),0px 12px 18px rgba(48, 84, 149, 0.2)'
-  },
-});
 
 export default payfees;

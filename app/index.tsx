@@ -10,23 +10,23 @@ export default function Index() {
   const router = useRouter();
 
   //dashboard teacher
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
 
-      router.push("/components/teacher/teachersdashboard");
-    }, 3000);
-    return () => clearTimeout(timer); // ✅ Cleanup on unmount
-  }, []); // ✅ Only run once
+  //     router.push("/components/teacher/teachersdashboard");
+  //   }, 3000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
 
 
    //Parent Dashboard
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
 
-      router.push("/components/parents/parentsdashboard");
-    }, 3000);
-    return () => clearTimeout(timer); // ✅ Cleanup on unmount
-  }, []); // ✅ Only run once
+  //     router.push("/components/parents/parentsdashboard");
+  //   }, 3000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
 
 
 // login function
