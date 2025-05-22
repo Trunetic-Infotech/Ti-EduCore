@@ -30,27 +30,6 @@ import Result from "./screens/results/studentresults";
 import Maps from "./screens/map/maps";
 
 
- const fetchUser = async() =>{
-    const userID = localStorage.getItem("userId")
-    const token = localStorage.getItem("token")
-    // console.log(userID)
-      try {
-        const result = await axios.get(
-          `${import.meta.env.VITE_URL}/parents/profile/${userID}`, // ✅ Corrected Environment Variable
-           
-          {headers: {
-            Authorization: `Bearer ${token}`,
-          },}
-        );
-        dispatch(setUser(result.data.parent))
-        console.log(result)
-      } catch (error) {
-        console.log(error)
-              toast.error(error.response?.data?.message || " Something went wrong!");
-        
-      }
-    }
-
 
 const parentsdashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
