@@ -26,10 +26,7 @@ const login = () => {
 
   const handleLogin = async () => {
     // console.log(email, password, role);
-    if(!email || !password || !role){
-      Alert.alert("Missing Fields", "Please fill in all required fields");
-      return;
-    }else{
+    
       try { 
         const response = await axios.post(`${API_URL}/admin/login`,
           {email, password, Role: role}
@@ -84,7 +81,7 @@ const login = () => {
 
         console.log(error);
       }
-    }
+    
   };
 
   return (

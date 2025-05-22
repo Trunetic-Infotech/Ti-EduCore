@@ -10,13 +10,13 @@ export default function Index() {
   const router = useRouter();
 
   //dashboard teacher
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
 
-      router.push('/components/students/studentsdashboard');
-    }, 2000);
-    return () => clearTimeout(timer); // ✅ Cleanup on unmount
-  }, []); // ✅ Only run once
+  //     router.push('/components/students/studentsdashboard');
+  //   }, 2000);
+  //   return () => clearTimeout(timer); // ✅ Cleanup on unmount
+  // }, []); // ✅ Only run once
 
   // login function
   // ✅ Only run once
@@ -30,6 +30,10 @@ export default function Index() {
 
   //   return () => clearTimeout(timer); // Cleanup on unmount
   // }, []);
+
+
+  
+
   return (
     <SafeAreaView className="flex-1" edges={["top", "bottom"]}>
       <View className="bg-gray-200 items-center justify-center h-full relative">
