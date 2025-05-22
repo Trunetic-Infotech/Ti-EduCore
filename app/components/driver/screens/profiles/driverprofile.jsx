@@ -1,15 +1,18 @@
-import { View, Text, Image, FlatList, ScrollView } from 'react-native'
-import React from 'react'
+import { AntDesign, Feather, FontAwesome6, Foundation } from '@expo/vector-icons';
+import React, { Component } from 'react'
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const Profile = () => {
+
+const driverprofile = () => {
 
   const data = [
     {
-      label: "Student Roll No",
-      value: "101",
+      label: "Email ID",
+      value: "asad@gmail.com",
     },
     {
-      label: "Student Name",
+      label: "Driver Name",
       value: "Asad Shaikh",
     },
     {
@@ -17,49 +20,40 @@ const Profile = () => {
       value: "8868542153",
     },
     {
-      label: "GR No",
-      value: "ADM1001",
-    },
-    {
-      label: "Email ID",
-      value: "asad@gmail.com",
-    },
-    {
-      label: "Date Of Birth",
-      value: "24/03/2025",
-    },
-    {
-      label: "Leaving Certificate",
-      value: "Data"
-    }, 
-    {
       label: "Aadhar Card Number",
       value: "666688554477",
-    }, 
+    },
+
+    {
+      label: "Pan Card Number",
+      value: "BJEP12345",
+    },
+    {
+      label: "Driving License",
+      value: "Data"
+    },
+    {
+      label: "Driver Join Date",
+      value: "24/03/2025",
+    },
     {
       label: "Admission Date",
       value: "24/03/2025",
     },
     {
-      label: "Current Class",
-      value: "1",
+      label: "Experience",
+      value: "5 years",
     },
     {
-      label: "Sub Class",
-      value: "A",
-    },
-    {
-      label: "Status",
-      value: "Active",
+      label: "Salary",
+      value: "15,000",
     },
     {
       label: "Address",
-      value: "Thane",
-    }, 
-    
-  ]
+      value: "Thane, Maharashtra, India",
+    },
 
-  // console.log(data);
+  ]
 
   return (
     <FlatList
@@ -69,7 +63,7 @@ const Profile = () => {
       ListHeaderComponent={
         <View className='p-2'>
           <View className='items-center m-2'>
-            <Text className="text-2xl font-bold text-[#305495]">Student Profile</Text>
+            <Text className="text-2xl font-bold text-[#305495]">Driver Profile</Text>
           </View>
 
           <View className='items-center gap-2 mb-4'>
@@ -90,8 +84,9 @@ const Profile = () => {
       contentContainerStyle={{ paddingBottom: 20 }} // for spacing at the bottom
       showsVerticalScrollIndicator={false}
     />
-    
+
   )
 }
 
-export default Profile
+
+export default driverprofile;

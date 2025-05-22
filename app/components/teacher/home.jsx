@@ -1,10 +1,9 @@
 import { View, Text, ScrollView } from "react-native";
-import React, { useState } from "react";
 import CardCoponets from "../commanComponents/CardCoponets";
-import Profile from "./screens/profile/profile";
-import { useRouter } from "expo-router";
+import TimeTable from './screens/timetable/timetable';
+import HomeWorks from "./screens/homework/homeWorks";
+
 const home = () => {
-  const router = useRouter();
 
   return (
     <ScrollView>
@@ -29,10 +28,12 @@ const home = () => {
 
         {/* Text Message */}
         <View className="mt-4">
-          <Text className="text-lg text-[#305495] font-bold">
-            No Homework Available
-          </Text>
+         <HomeWorks />
         </View>
+      </View>
+      <View className="mt-4">
+
+     <TimeTable/>
       </View>
     </ScrollView>
   );
