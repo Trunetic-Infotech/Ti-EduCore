@@ -1,42 +1,82 @@
-import { View, Text } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 
 const addComplaints = () => {
-  const tableHead = ['Name', 'Class', 'Status'];
-  const tableData = [
-    ['Asad Shaikh', '1', 'Present'],
-    ['Pooja Verma', '1', 'Absent'],
-    ['Rahul Kumar', '1', 'Absent'],
-  ];
+  const [date, setDate] = useState(new Date());
+    const [showPicker, setShowPicker] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+  
+    const onChange = (event, selectedDate) => {
+      setShowPicker(false);
+      if (selectedDate) {
+        setDate(selectedDate);
+      }
+    };
 
   return (
-    <View style={{ padding: 10 }}>
-      {/* Table Header */}
-      <View style={{ flexDirection: 'row', backgroundColor: '#305495', padding: 10 }}>
-        {tableHead.map((head, index) => (
-          <Text key={index} style={{ flex: 1, color: '#fff', fontWeight: 'bold' }}>
-            {head}
-          </Text>
-        ))}
-      </View>
-
-      {/* Table Rows */}
-      {tableData.map((row, rowIndex) => (
-        <View
-          key={rowIndex}
-          style={{
-            flexDirection: 'row',
-            padding: 10,
-            backgroundColor: rowIndex % 2 === 0 ? '#f2f2f2' : '#fff',
-          }}
-        >
-          {row.map((cell, cellIndex) => (
-            <Text key={cellIndex} style={{ flex: 1 }}>
-              {cell}
-            </Text>
-          ))}
-        </View>
-      ))}
-    </View>
+    <View className="flex-1 bg-gray-100 p-4">
+         <View className="bg-white border-2 border-[#305495] rounded-2xl p-5 space-y-5 shadow-md">
+           <Text className="text-center text-2xl font-bold text-[#305495]">
+             Complaints Form
+           </Text>
+   
+           <View className="space-y-4">
+             <View>
+               <Text className="font-semibold text-gray-700 mb-1">Username</Text>
+               <TextInput
+                 className="border border-[#305495] rounded-lg p-3 bg-white"
+                 placeholder="Enter  Username"
+               />
+             </View>
+   
+             <View>
+               <Text className="font-semibold text-gray-700 mb-1">
+                 Contact 
+               </Text>
+               <TextInput
+                 className="border border-[#305495] rounded-lg p-3 bg-white"
+                 placeholder="Enter Contact No"
+               />
+             </View>
+   
+   
+             <View>
+               <Text className="font-semibold text-gray-700 mb-1">Date</Text>
+               <TouchableOpacity
+                 // onPress={() => setShowPicker(true)}
+                 className="border border-[#305495] rounded-lg p-3 bg-gray-50"
+               >
+                 <Text className="text-gray-700">{date.toDateString()}</Text>
+               </TouchableOpacity>
+               {showPicker && (
+                 <DateTimePicker
+                   value={date}
+                   mode="date"
+                   display="default"
+                   onChange={onChange}
+                 />
+               )}
+             </View>
+   
+             <View>
+               <Text className="font-semibold text-gray-700 mb-1">
+                 Description
+               </Text>
+               <TextInput
+                 className="border border-[#305495] rounded-lg p-3 bg-white"
+                 placeholder="Enter Description"
+                 multiline
+                 numberOfLines={4}
+                 style={{ minHeight: 100, textAlignVertical: "top" }}
+               />
+             </View>
+           </View>
+   
+           <TouchableOpacity className="bg-[#305495] rounded-xl py-3 mt-3 items-center">
+             <Text className="text-white font-bold text-lg">Submit</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
   );
 };
 

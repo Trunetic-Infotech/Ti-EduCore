@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import "./components/teacher/teachersdashboard"
+// import "./components/driver/driverdashboard"
 
 export default function Index() {
   const [isOpen, setIsOpen] = useState(false);

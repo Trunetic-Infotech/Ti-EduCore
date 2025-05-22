@@ -1,7 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 const forgotpassword =() => {
+  const[email, setEmail]=useState('');
+
+  useEffect(()=>{
+    console.log(email)
+
+  },[email])
+  
 
     return (
         <SafeAreaView>
@@ -21,7 +28,7 @@ const forgotpassword =() => {
               <Text className="text-xl font-bold text-shadow-xl p-1 gap-4">Forgot Password</Text>
             </View>
             <View className="flex justify-center items-center gap-3 w-full">
-              <TextInput placeholder='Enter Your Email' keyboardType='email-address'
+              <TextInput value={email} onChangeText={setEmail} placeholder='Enter Your Email' keyboardType='email-address'
               className="bg-gray-100 border-2 rounded-xl text-sm font-bold p-1 w-[90%] border-[#f5b237] shadow">
               </TextInput>
             </View>
