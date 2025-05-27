@@ -10,6 +10,8 @@ const studentprofile = ({studentId}) => {
   const user = useSelector((state) => state.auth.user)
 
   const [student, setStudent] = useState([]);
+  console.log(studentId);
+  
 
   const getStudentData = async()=>{
     try {

@@ -1,10 +1,10 @@
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import CardCoponets from "../commanComponents/CardCoponets";
 
-const home = ({ students }) => {
+const home = ({ students, setStudentId, setTeacher_id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState([null]);
    const [pressedItem, setPressedItem] = useState(null);
@@ -12,7 +12,17 @@ const home = ({ students }) => {
 
   const user = useSelector((state) => state.auth.user);
 
-  console.log(students,'hello');
+
+  useEffect(()=>{
+    if(students && students.length > 0){
+      setSelectedStudent(students[0]);
+      setStudentId(students[0].id);
+      setTeacher_id(students[0].teacher_id);
+    }
+  },[students])
+
+
+  
 
   return (
     <View>
@@ -32,7 +42,7 @@ const home = ({ students }) => {
                   className="flex-row items-center border border-[#305495] rounded-xl p-2 bg-white"
                 >
                   <Text className="text-black text-sm font-bold ">
-                    {selectedStudent ? selectedStudent : "--Select A Student--"}
+                    {selectedStudent ? selectedStudent.student_name : "--Select A Student--"}
                   </Text>
 
                   <Feather
@@ -52,7 +62,8 @@ const home = ({ students }) => {
                     <Pressable
                       key={index}
                       onPress={() => {
-                        setSelectedStudent(student.student_name);
+                        setSelectedStudent(student);
+                        setStudentId(student.id);
                         setIsOpen(false);
                       }}
                       onPressIn={() => setPressedItem(index)}
@@ -71,13 +82,14 @@ const home = ({ students }) => {
           </View>
         </TouchableOpacity>
 
-        <CardCoponets name="7" data="Class" className="w-[48%]  " />
+        <CardCoponets name={selectedStudent.class_name} data="Class" className="w-[48%]  " />
+        <CardCoponets name={selectedStudent.division} data="Class" className="w-[48%] z-[-1] " />
 
-        <CardCoponets name="View Attendance" className="w-[48%]  z-[-100]" />
+        <CardCoponets name="View Attendance" className="w-[48%]  z-[-1]" />
 
-        <CardCoponets name="Pay Fees" className="w-[48%]" />
-        <CardCoponets name="Events" className="w-[48%]" />
-        <CardCoponets name="Pending Homeworks" className="w-[48%]" />
+        <CardCoponets name="Pay Fees" className="w-[48%] z-[-1]" />
+        <CardCoponets name="Events" className="w-[48%] z-[-1]" />
+        <CardCoponets name="Pending Homeworks" className="w-full" />
       </View>
 
       {/* Form */}

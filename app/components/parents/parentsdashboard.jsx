@@ -40,7 +40,7 @@ const parentsdashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
-  const [student, setStudent] = useState(null);
+
 
  
   const [students, setStudents] = useState([]);
@@ -59,8 +59,7 @@ const parentsdashboard = () => {
 
       const userId = await SecureStore.getItemAsync("userId");
       const token = await SecureStore.getItemAsync("token");
-      console.log(userId);
-      console.log(token);
+     
       console.log(API_URL, `/parents/profile/${userId}`);
       const response = await axios.get(`${API_URL}/parents/profile/${userId}`, {
         headers: {
@@ -96,7 +95,7 @@ const parentsdashboard = () => {
         }
       );
 
-      console.log(response.data.profile,'by');
+      // console.log(response.data.profile,'by');
       if (response.data && response.data.profile) {
         setStudents(response.data.profile);
       } else {
@@ -139,9 +138,9 @@ const parentsdashboard = () => {
         key: "studentprofile",
         component: (
           <Studentprofile
-            student={student}
+            
             studentId={studentId}
-            setStudentId={setStudentId}
+            
           />
         ),
       },
@@ -263,6 +262,11 @@ const parentsdashboard = () => {
     },
   ];
 
+  useEffect(()=>{
+    console.log(teacher_id)
+  },[teacher_id])
+ 
+
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
       {/* Custom Header */}
@@ -274,7 +278,7 @@ const parentsdashboard = () => {
         ) : (
           // Default content
           <View>
-            <Home  students={students}/>
+            <Home  students={students} setStudentId={setStudentId} setTeacher_id={setTeacher_id}/>
           </View>
         )}
       </View>
@@ -302,7 +306,7 @@ const parentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Home students={students} />);
+                setSelectedComponent(<Home students={students} setStudentId={setStudentId} setTeacher_id={setTeacher_id} />);
                 setIsOpen(false);
               }}
             >
