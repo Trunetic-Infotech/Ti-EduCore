@@ -32,7 +32,7 @@ const Events = () => {
     event.events_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   return (
-     <View className="flex-1 bg-gray-100 p-4">
+    <View className="flex-1 bg-gray-100 p-4">
       {/* Search bar */}
       <View className="flex-row items-center mb-6 space-x-3">
         <TextInput
@@ -53,9 +53,8 @@ const Events = () => {
           filteredEvents.map((event, index) => (
             <View
               key={index}
-              className={`rounded-xl p-6 mb-6 ${
-                index % 2 === 0 ? "bg-blue-100" : "bg-orange-200"
-              }`}
+              className={`rounded-xl p-6 mb-6 ${index % 2 === 0 ? "bg-blue-100" : "bg-orange-200"
+                }`}
             >
               <Text className="text-xl font-semibold text-[#305495] mb-2">
                 {event.events_name}
