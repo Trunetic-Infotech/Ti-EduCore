@@ -1,5 +1,9 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, Alert } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { API_URL } from "@env";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const demoClassTimeTable = [
   {
@@ -16,6 +20,40 @@ const demoWholeExamTT = [
 ];
 
 const TimeTable = () => {
+
+  const user = useSelector((state)=>state.auth.user);
+   const [classtimetable, setclassTimeTable] = useState([]);
+  const [wholeExamTT, setWholeExamTT] = useState([]);
+
+  const fetchClassTimeTable = async()=>{
+    try {
+      const token = await SecureStore.getItemAsync("token");
+
+      const response = await axios.get(`${API_URL}/exam/get-exam-time-table/${user.class_id}?admin_id=${user.admin_id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+
+      // console.log(response);
+      if(response.data && (response.data.class_exams || response.data.whole_school_exams)){
+        setclassTimeTable(response.data.class_exams);
+        setWholeExamTT(response.data.whole_school_exams);
+      }else{
+        Alert.alert("Error", response.data.message);
+      }
+      
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Internal Server Error");
+      
+    }
+  }
+
+  useEffect(()=>{
+    fetchClassTimeTable();
+  },[])
+
   const renderCard = (data) => {
     if (data.length === 0) return null;
 
@@ -63,8 +101,8 @@ const TimeTable = () => {
         </Text>
       ) : (
         <>
-          {renderCard(demoClassTimeTable)}
-          {renderCard(demoWholeExamTT)}
+          {renderCard(classtimetable)}
+          {renderCard(wholeExamTT)}
         </>
       )}
     </ScrollView>

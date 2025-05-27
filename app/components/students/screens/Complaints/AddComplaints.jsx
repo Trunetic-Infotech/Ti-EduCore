@@ -1,6 +1,48 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useState } from 'react';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+import { API_URL } from '@env';
 
 const AddComplaints = () => {
+  const user = useSelector((state)=> state.auth.user);
+
+  const [contactNo, setContactNo] = useState(user.phone_number);
+    const today = new Date().toISOString().split("T")[0];
+    const [date, setDate] = useState(today);
+    const [description, setDescription] = useState("");
+    const [userName, setUserName] = useState(user.student_name);
+
+    // console.log(description);
+
+    const handleSubmit = async() => {
+      const formData = {
+        user_name: userName,
+        phone_number: contactNo,
+        complaint_date:date,
+        description,
+        student_id: user.id,
+        admin_id: user.admin_id,
+      };
+      console.log("Submitted Data:", formData);
+      // You can now send formData to an API or process it further
+      try {
+        const response  = await axios.post( `${API_URL}/complaint/add`,
+          formData
+        )
+        if(response.data.success){
+                // console.log(result.data.message);
+                Alert.alert("Submission Successfull!",response.data.message);
+                setDescription("")
+              }else{
+                Alert.alert("Error",response.data.message);
+              }
+      } catch (error) {
+        Alert.alert("Error",error.response?.data?.message || "Something went wrong!");
+      }
+    };
+    
   return (
     <View className='justify-center h-full p-4'>
       <View className='items-center bg-gray-200 px-2 py-4 rounded-md gap-4 ' style={styles.box}>
@@ -8,19 +50,23 @@ const AddComplaints = () => {
         <View className='w-full items-center gap-4'>
           <View className='w-[75%] gap-2' >
             <Text className='font-bold'>UserName</Text>
-            <TextInput placeholder='Enter your Name' className='p-4 rounded-md border-2 border-[#305495] w-full '></TextInput>
+            <TextInput value={user ? user.student_name : "Loading...."} className='p-4 rounded-md border-2 border-[#305495] w-full '></TextInput>
           </View>
           <View className='w-[75%] gap-2'>
             <Text className='font-bold'>Contact No</Text>
-            <TextInput placeholder='Enter your Name' className='p-4 rounded-md border-2 border-[#305495] w-full '></TextInput>
+            <TextInput value={user ? user.phone_number : "Loading..."} className='p-4 rounded-md border-2 border-[#305495] w-full '></TextInput>
           </View>
           <View className='w-[75%] gap-2'>
             <Text className='font-bold'>Description </Text>
-            <TextInput placeholder='Enter your Name' className='p-4 rounded-md border-2 border-[#305495] w-full '></TextInput>
+            <TextInput placeholder="Enter Description"
+  value={description}
+  onChangeText={(text) => setDescription(text)}
+  multiline
+  numberOfLines={4} className='p-4 rounded-md border-2 border-[#305495] w-full '></TextInput>
           </View>
         </View>
 
-        <TouchableOpacity className='bg-[#f1a621] w-[75%] items-center p-2 rounded-md'>
+        <TouchableOpacity onPress={handleSubmit} className='bg-[#f1a621] w-[75%] items-center p-2 rounded-md'>
           <Text className='font-bold'>Submit</Text>
         </TouchableOpacity>
       </View>

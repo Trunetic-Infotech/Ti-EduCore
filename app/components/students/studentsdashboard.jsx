@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import Header from "./../commanComponents/header";
-import Home from "../students/screens/home/home"
+import Home from "../students/screens/home/Home"
 import Profile from "./screens/profile/Profile";
 import Homework from "./screens/studyMaterial/Homework";
 import SubmitHomework from "./screens/studyMaterial/SubmitHomework";
@@ -30,7 +30,7 @@ import { useRouter } from "expo-router";
 import * as SecureStore from 'expo-secure-store'
 import axios from "axios";
 import { API_URL } from '@env';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../redux/features/authSlice";
 
 const studentsdashboard = () => {
@@ -40,7 +40,10 @@ const studentsdashboard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   
-  
+  const [subjects, setSubjects] = useState([]);
+  const [subject_id, setSubject_id] = useState(null)
+  const [subject_name, setSubject_name] = useState(null)
+  const user = useSelector((state)=> state.auth.user);
 
   const fetchUser = async()=>{
     try {
@@ -48,6 +51,8 @@ const studentsdashboard = () => {
       const token = await SecureStore.getItemAsync('token');
       // console.log(userId);
       // console.log(token);
+      console.log(API_URL);
+      
       const response = await axios.get(`${API_URL}/student/profile/${userId}`,{
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,8 +70,29 @@ const studentsdashboard = () => {
     }
   }
 
+
+  const getSubject = async()=>{
+    try {
+      const token = await SecureStore.getItemAsync("token")
+          const response = await axios.get(`${API_URL}/class/subject/get-all-class?class_id=${user.class_id}`,{
+            headers: {
+              Authorization : `Bearer ${token}`
+            }
+          })
+          console.log("All the Subjects",response)
+          if(response.data && response.data.AllSubject){
+            setSubjects(response.data.AllSubject)
+          }else{
+            Alert.alert("Error",response.data.message);
+          }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Internal Server Error");
+    }
+  }
   useEffect(()=>{
     fetchUser();
+    getSubject();
   },[])
 
   useEffect(() => {
@@ -121,7 +147,7 @@ const studentsdashboard = () => {
       name: "Notes",
       subitem: {
         key: "notes",
-        component: <Notes />,
+        component: <Notes setSelectedComponent={setSelectedComponent} getSubject={getSubject} subjects={subjects} setSubject_id={setSubject_id} setSubject_name={setSubject_name} />,
       },
     },
     {
@@ -129,7 +155,7 @@ const studentsdashboard = () => {
       name: "Video Lectures",
       subitem: {
         key: "videoLectures",
-        component: <VideoLectures />,
+        component: <VideoLectures setSelectedComponent={setSelectedComponent} getSubject={getSubject} subjects={subjects} setSubject_id={setSubject_id} setSubject_name={setSubject_name}/>,
       },
     },
   ];
@@ -144,7 +170,7 @@ const studentsdashboard = () => {
       name: "Current Year results",
       subitem: {
         key: "currentYearResult",
-        component: <CurrentYearResults />,
+        component: <CurrentYearResults setSelectedComponent={setSelectedComponent}/>,
       },
     },
     {
@@ -286,7 +312,7 @@ const studentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent({ subitem: { component: <Profile /> } });
+                setSelectedComponent({ subitem: { component: <Profile fetchUser={fetchUser}/> } });
                 setIsOpen(false);
               }}
             >

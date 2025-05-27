@@ -1,4 +1,9 @@
-import { Text, View, ScrollView } from 'react-native'
+import { Text, View, ScrollView, Alert } from 'react-native'
+import { useSelector } from 'react-redux'
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+import { API_URL } from '@env';
+import { useEffect, useState } from 'react';
 
 const ViewAnswers = () => {
   const data = [
@@ -28,35 +33,66 @@ const ViewAnswers = () => {
       answered_by: "Pooja",
     }
   ]
+
+  const [questions, setQuestions] = useState([]);
+  const user = useSelector((state)=> state.auth.user);
+
+  const getAllQuestions = async()=>{
+    try {
+      const token = await SecureStore.getItemAsync('token');
+
+      const response = await axios.get(`${API_URL}/students/askquestions/get-ask-questions/students/${user.id}`, {
+        headers: {
+          Authorization:  `Bearer ${token}`,
+        }
+      })
+      // console.log(response);
+      if(response.data && response.data.data){
+        setQuestions(response.data.data);
+      }else{
+        Alert.alert('Error', response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Internal Server Error");
+    }
+  }
+
+  useEffect(()=>{
+    getAllQuestions()
+  },[])
+
   return (
    <ScrollView className="flex-1 bg-gray-100">
-      <View className="items-center p-4">
-        <Text className="text-2xl font-bold text-[#305495] mb-4">
-          View Answers
-        </Text>
+  <View className="items-center p-4">
+    <Text className="text-2xl font-bold text-[#305495] mb-4">View Answers</Text>
 
-        {/* Table Header */}
-        <View className="flex-row w-full justify-between px-4 py-2 bg-white rounded-t-xl shadow border-b border-gray-300">
-          <Text className="w-1/3 font-semibold text-[#305495]">Question</Text>
-          <Text className="w-1/3 font-semibold text-[#305495]">Answer</Text>
-          <Text className="w-1/3 font-semibold text-[#305495]">Answered By</Text>
+    {Array.isArray(questions) && questions.length > 0 ? (
+      questions.map((item, index) => (
+        <View
+          key={index}
+          className="bg-white rounded-xl shadow-md p-4 mb-4 w-full"
+        >
+          <Text className="text-sm text-gray-500 mb-2">Question:</Text>
+          <Text className="text-base font-medium text-gray-800 mb-2">{item.question_text}</Text>
+
+          <Text className="text-sm text-gray-500 mb-2">Answer:</Text>
+          <Text className="text-base text-gray-800 mb-2">
+            {item.answer_text || "Not answered yet"}
+          </Text>
+
+          <Text className="text-sm text-gray-500 mb-1">Answered By:</Text>
+          <Text className="text-base text-gray-800">
+            {item.answer_text ? item.teacher_Name : "-"}
+          </Text>
         </View>
+      ))
+    ) : (
+      <Text className="text-center text-gray-500 mt-4">No questions available</Text>
+    )}
+  </View>
+</ScrollView>
 
-        {/* Table Body */}
-        {data.map((item, index) => (
-          <View
-            key={index}
-            className={`flex-row w-full justify-between px-4 py-3 ${
-              index % 2 === 0 ? 'bg-blue-50' : 'bg-orange-50'
-            }`}
-          >
-            <Text className="w-1/3 text-gray-800">{item.question}</Text>
-            <Text className="w-1/3 text-gray-800">{item.answer}</Text>
-            <Text className="w-1/3 text-gray-800">{item.answered_by}</Text>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
   )
 }
 
