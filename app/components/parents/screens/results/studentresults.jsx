@@ -1,7 +1,49 @@
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { Feather } from '@expo/vector-icons';
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import * as SecureStore from "expo-secure-store"; // Correct usage
+import { Feather } from "@expo/vector-icons";
+import { API_URL } from "@env";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const studentresults = () => {
+// import { getItem } from 'expo-secure-store';
+
+const studentresults = ({setProgressId}) => {
+  const [result, setResult] = useState([]);
+
+  const user = useSelector((state) => state.auth.user);
+
+  // console.log(result,"hello");
+
+  const getStudentsResult = async () => {
+    try {
+      const token = await SecureStore.getItemAsync("token");
+      const response = await axios.get(
+        `${API_URL}/parents/get-students-result/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response, "hello");
+      if (response.data && response.data.data) {
+        setResult(response.data.data);
+      } else {
+        Alert.alert(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert(error.response?.data?.message || "Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      getStudentsResult();
+    }
+  }, [user]);
+
   return (
     <View className="p-4 bg-gray-100 min-h-full">
       {/* Search Input */}
@@ -14,53 +56,84 @@ const studentresults = () => {
           name="search"
           size={20}
           color="gray"
-          style={{ position: 'absolute', left: '14%', zIndex: 1 }}
+          style={{ position: "absolute", left: "14%", zIndex: 1 }}
         />
       </View>
 
       {/* Card */}
-      <View className="bg-white rounded-xl shadow-md p-4 space-y-3">
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Roll No</Text>
-          <Text className="font-semibold text-gray-800">101</Text>
-        </View>
+      {result.length > 0 ? (
+        result.map((result, index) => (
+          <View
+            key={index}
+            className="bg-white rounded-xl shadow-md p-4 space-y-3 mb-4"
+          >
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Roll No</Text>
+              <Text className="font-semibold text-gray-800">
+                {result.roll_number}
+              </Text>
+            </View>
 
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Student Name</Text>
-          <Text className="font-semibold text-gray-800">Asad Shaikh</Text>
-        </View>
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Student Name</Text>
+              <Text className="font-semibold text-gray-800">
+                {result.student_name}
+              </Text>
+            </View>
 
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Marks Obtained</Text>
-          <Text className="font-semibold text-gray-800">140</Text>
-        </View>
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Marks Obtained</Text>
+              <Text className="font-semibold text-gray-800">
+                {result.marks_obtained}
+              </Text>
+            </View>
 
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Total Marks</Text>
-          <Text className="font-semibold text-gray-800">400</Text>
-        </View>
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Total Marks</Text>
+              <Text className="font-semibold text-gray-800">
+                {result.total_marks}
+              </Text>
+            </View>
 
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Percentage</Text>
-          <Text className="font-semibold text-gray-800">35%</Text>
-        </View>
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Percentage</Text>
+              <Text className="font-semibold text-gray-800">
+                {result.percentage}%
+              </Text>
+            </View>
 
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Grade</Text>
-          <Text className="font-semibold text-red-500">F</Text>
-        </View>
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Grade</Text>
+              <Text className="font-semibold text-red-500">{result.grade}</Text>
+            </View>
 
-        <View className="flex-row justify-between">
-          <Text className="text-gray-500 font-medium">Remarks</Text>
-          <Text className="font-semibold text-yellow-600">Need More Improvement!</Text>
-        </View>
+            <View className="flex-row justify-between">
+              <Text className="text-gray-500 font-medium">Remarks</Text>
+              <Text className="font-semibold text-yellow-600">
+                {result.remarks}
+              </Text>
+            </View>
 
-         <TouchableOpacity className="mt-4 bg-[#f1a621] rounded-xl py-2 px-4 items-center">
-          <Text className="text-white font-bold">View Result</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity className="mt-4 bg-[#f1a621] rounded-xl py-2 px-4 items-center">
+              <Text
+                onPress={() => {
+                  setProgressId(item.id);
+                  setShowComponent("View Result");
+                }}
+                className="text-white font-bold"
+              >
+                View Result
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ))
+      ) : (
+        <Text className="text-center text-gray-500">
+          Loading or No results found
+        </Text>
+      )}
     </View>
-  )
-}
+  );
+};
 
-export default studentresults
+export default studentresults;

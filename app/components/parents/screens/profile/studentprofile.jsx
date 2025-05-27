@@ -1,8 +1,46 @@
-import { View, Text, Image, FlatList, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, FlatList, ScrollView, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import {API_URL} from '@env'
+import * as SecureStore from 'expo-secure-store'
+import axios from 'axios'
 
-const studentprofile = () => {
+const studentprofile = ({studentId}) => {
 
+  const user = useSelector((state) => state.auth.user)
+
+  const [student, setStudent] = useState([]);
+
+  const getStudentData = async()=>{
+    try {
+      const token =await SecureStore.getItemAsync("token");
+      const response = await axios.get(`${API_URL}/student/profile/${studentId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      console.log(response)
+
+      if(response.data && response.data.user){
+        setStudent(response.data.user);
+      }else{
+        Alert.alert(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert(error.response?.data?.message || " Something went wrong!");
+    }
+  }
+
+  useEffect(()=>{
+    getStudentData()
+  },[])
+
+  
+ 
+
+console.log("hello",student)
   const data = [
     {
       label: "Student Roll No",
@@ -10,11 +48,11 @@ const studentprofile = () => {
     },
     {
       label: "Student Name",
-      value: "Asad Shaikh",
+      value: student ? student.student_name : "loading"
     },
     {
       label: "Contact No.",
-      value: "8868542153",
+      value: "contact"
     },
     {
       label: "GR No",
@@ -93,7 +131,5 @@ const studentprofile = () => {
     
   )
 }
-
-
 
 export default studentprofile;

@@ -1,13 +1,19 @@
 import { View, Text, Image, FlatList, ScrollView } from 'react-native'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const teacherprofile = () => {
+
+
+  const user = useSelector ((state) => state.auth.user)
+
+  console.log(user)
 
   const data = [
    
     {
       label: "Teacher Name",
-      value: "Asad Shaikh",
+      value: user ? user.parents_name:"Amar",
     },
     {
       label: "Contact No.",

@@ -2,39 +2,41 @@ import { AntDesign, Feather, FontAwesome6, Foundation } from '@expo/vector-icons
 import React, { Component } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from 'react-redux';
 
 
 const driverprofile = () => {
-
+const user=useSelector((state)=>state.auth.user);
+console.log(user);
   const data = [
     {
       label: "Email ID",
-      value: "asad@gmail.com",
+      value:  user ? user.email:"loading",
     },
     {
       label: "Driver Name",
-      value: "Asad Shaikh",
+      value:  user ? user.derivers_name:"loading",
     },
     {
       label: "Contact No.",
-      value: "8868542153",
+      value: user ? user.phone_number:"loading",
     },
     {
       label: "Aadhar Card Number",
-      value: "666688554477",
+      value: user ? user.aadhaar_number:"loading",
     },
 
     {
       label: "Pan Card Number",
-      value: "BJEP12345",
+      value: user ? user.pan_Card:"loading",
     },
     {
       label: "Driving License",
-      value: "Data"
+      value: user ? user.licence_number:"loading"
     },
     {
       label: "Driver Join Date",
-      value: "24/03/2025",
+      value: user ? user.date_of_join:"loading",
     },
     {
       label: "Admission Date",
@@ -42,15 +44,15 @@ const driverprofile = () => {
     },
     {
       label: "Experience",
-      value: "5 years",
+      value: user ? user.experience:"loading",
     },
     {
       label: "Salary",
-      value: "15,000",
+      value: user ? user.salary:"loading",
     },
     {
       label: "Address",
-      value: "Thane, Maharashtra, India",
+      value: user ? user.address:"loading",
     },
 
   ]
