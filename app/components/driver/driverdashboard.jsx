@@ -1,4 +1,4 @@
-import { BackHandler, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
+import { BackHandler, View, Text, TouchableOpacity, FlatList, ScrollView, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
@@ -6,11 +6,46 @@ import Header from "./../commanComponents/header";
 import Driverprofile from "./screens/profiles/driverprofile";
 import Viewdetails from "./screens/busdetails/viewdetails"
 import Studentlist from "./screens/list/studentlist"
+import * as SecureStore from 'expo-secure-store'
+import axios from "axios";
+import { API_URL } from '@env';
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/features/authSlice";
+
 
   const driverdashboard= ()=>  {
      const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const dispatch=useDispatch();
+
+ const fetchUser = async()=>{
+    try {
+      const userId = await SecureStore.getItemAsync('userId');
+      const token = await SecureStore.getItemAsync('token');
+      // console.log(userId);
+      // console.log(token);
+      console.log (userId)
+      const response = await axios.get(`${API_URL}/deriver/profile/${userId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      if(response.data.success){
+        dispatch(setUser(response.data.user))
+        // Alert.alert("True", "User profile Set")
+      }else{
+        Alert.alert("No user Found", response.data.message)
+      }
+    } catch (error) {
+      console.log(error, "hello");
+      Alert.alert("Error", "Internal Server Error");
+    }
+  }
+
+  useEffect(()=>{
+    fetchUser();
+  },[])
 
   useEffect(() => {
     const backAction = () => {
@@ -28,6 +63,7 @@ import Studentlist from "./screens/list/studentlist"
 
     return () => backHandler.remove();
   }, [selectedComponent]);
+  
 
     
   
@@ -78,7 +114,7 @@ import Studentlist from "./screens/list/studentlist"
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(Viewdetails);
+                setSelectedComponent(<Viewdetails/>);
                 setIsOpen(false);
               }}
             >
@@ -90,7 +126,7 @@ import Studentlist from "./screens/list/studentlist"
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setSelectedComponent(Studentlist);
+                setSelectedComponent(<Studentlist/>);
                 setIsOpen(false);
               }}
               className="bg-gray-200 p-3 rounded-md mb-5"

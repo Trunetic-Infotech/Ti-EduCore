@@ -1,28 +1,67 @@
-import React, { Component } from 'react'
-import { FlatList, Image, Text, View } from 'react-native'
+import React, { Component, useEffect, useState } from 'react'
+import { Alert, FlatList, Image, Text, View } from 'react-native'
+import { useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store'
+import axios from "axios";
+import { API_URL } from '@env';
 
 const viewdetails=()=> {
+  const user=useSelector((state)=>state.auth.user);
+  const[bus,setBus]=useState([]);
+
+
+
+  const getBusdetail = async()=>{
+      try {
+        
+        const token =SecureStore.getItemAsync("token");
+
+        const response = await axios.get(`${API_URL}/vehnical/get-vehicle/drivers/${user.id}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        console.log(response.data.data);
+        if(response.data && response.data.data){
+          setBus(response.data.data);
+        }else{
+          Alert.alert("error",response.data.message);
+        }
+        
+      } catch (error) {
+        console.log(error);
+         Alert.alert(error.response?.data?.message || "Something went wrong!");
+        
+      }
+    }
+
+  useEffect(()=>{
+       if(user && user.id){
+        getBusdetail();
+      }
+  },[])
+
+
       const details = [
     {
       label: "Driver Name",
-      value: "Asad Shaikh",
+      value: user? user.derivers_name:"loading",
+    },
+      {
+      label: "Vehicle Number",
+      value: bus?bus.bus_number:"loading",
     },
      {
-      label: "Vehicle Name",
-      value: "Asad Shaikh",
+      label: "Model Year",
+      value: bus?bus.model_year:"loading",
     },
-    {
-      label: "Vehicle Number",
-      value: "666688554477",
-    },
-
     {
       label: "RC Number",
-      value: "BJEP12345",
+      value: bus?bus.rc_number:"loading",
     },
     {
       label: "Bus Color",
-      value: "Data"
+      value: bus?bus.bus_color:"loading"
     },
   ]
 
