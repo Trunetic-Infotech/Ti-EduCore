@@ -38,13 +38,89 @@ import Uploadhomework from "./screens/studyMaterial/uploadhomework";
 import Uploadnotes from "./screens/studyMaterial/uploadnotes";
 import Uploadvideoleacture from "./screens/studyMaterial/uploadvideoleacture";
 import Studentslist from "./screens/student/studentslist";
+// import TeacherProfile from "./screens/profile/TeacherProfile";
+import * as SecureStore from 'expo-secure-store'
+import { useDispatch } from "react-redux";
+import { useRouter } from "expo-router";
+import { API_URL } from '@env';
+import { setUser } from "../../../redux/features/authSlice";
+import axios from "axios";
 import Profile from "./screens/profile/profile";
+
+
 
 const TeachersDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  
 
+
+  const fetchUser = async()=>{
+    try {
+      const teacherId = await SecureStore.getItemAsync('userId');
+      const token = await SecureStore.getItemAsync('token');
+     
+      const response = await axios.get(`${API_URL}/teacher/profile/${teacherId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      // console.log(response);
+      
+      if(response.data.success){
+        dispatch(setUser(response.data.user))
+        // Alert.alert("True", "User profile Set")
+      }else{
+        Alert.alert("No Teacher Found", response.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Internal Server Error");
+    }
+  }
+
+  useEffect(()=>{
+    fetchUser();
+  },[])
+
+
+ const [homeworkList, setHomeworkList] = useState([]);
+  const [homework_id, setHomework_id] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const submissionPerPage = 12;
+
+
+   const getHomeworkAndSubmissions = async (page = 1) => {
+    try {
+      const token = SecureStore.getItem("token");
+
+      const response = await axios.get(
+        `${
+          API_URL
+        }/homework/get-homework-submission?page=${page}&limit=${submissionPerPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      if (response.data && response.data.homeworkList) {
+        setHomeworkList(response.data.homeworkList);
+      } else {
+        toast.error("No class data received.");
+      }
+    } catch (error) {
+      console.error("Error fetching Data:", error);
+      toast.error(error.response?.data?.message || "Something went wrong!");
+    }
+  };
+
+  
 
   useEffect(() => {
     const backAction = () => {
@@ -91,14 +167,23 @@ const TeachersDashboard = () => {
   ];
 
   const studyMetrialMap = [
-    {
-      id: "1",
-      name: "All Homework",
-      subitem: {
-        key: "allHomework",
-        component: <Allhomeworklist />,
-      },
-    },
+{
+  id: "1",
+  name: "All Homework",
+  subitem: {
+    key: "allHomework",
+    component:
+      selectedComponent?.subitem?.component ?? (
+        <Allhomeworklist
+          homeworkList={homeworkList}
+          getHomeworkAndSubmissions={getHomeworkAndSubmissions}
+          setHomework_id={setHomework_id}
+          setSelectedComponent={setSelectedComponent}
+        />
+      ),
+  },
+},
+
     {
       id: "2",
       name: "All Study Material",
@@ -147,6 +232,14 @@ const TeachersDashboard = () => {
         component: <Uploadvideoleacture />,
       },
     },
+    // {
+    //   "Student Submissions": (
+    //   <StudentSubmissions
+    //     homeworkList={homeworkList}
+    //     homework_id={homework_id}
+    //   />
+    // ),
+    // }
   ];
 
   const resultsMap = [
@@ -297,7 +390,8 @@ const TeachersDashboard = () => {
     },
   ];
 
-   useEffect
+  
+
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
       {/* Custom Header */}
@@ -305,7 +399,7 @@ const TeachersDashboard = () => {
       {/* Page Content */}
       <View className="p-4 flex-1">
         {selectedComponent ? (
-          selectedComponent
+          selectedComponent 
         ) : (
           // Default content
           <View>
@@ -335,7 +429,9 @@ const TeachersDashboard = () => {
             </Text>
      <TouchableOpacity
         className="bg-gray-200 p-3 rounded-md mb-3"
-        onPress={() => setSelectedComponent(<Home />)}
+        onPress={() => setSelectedComponent(<Home 
+        setHomework_id={setHomework_id}
+        getHomeworkAndSubmissions={getHomeworkAndSubmissions} />)}
       >
         <Text className="text-black font-semibold text-center">Home</Text>
       </TouchableOpacity>
@@ -344,7 +440,7 @@ const TeachersDashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(Profile);
+                setSelectedComponent(<Profile />);
                 setIsOpen(false);
               }}
             >
@@ -356,7 +452,7 @@ const TeachersDashboard = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setSelectedComponent(Studentslist);
+                setSelectedComponent(<Studentslist setSelectedComponent={setSelectedComponent} />);
                 setIsOpen(false);
               }}
               className="bg-gray-200 p-3 rounded-md mb-5"

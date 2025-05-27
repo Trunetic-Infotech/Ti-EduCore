@@ -2,19 +2,19 @@ import { View, Text, ScrollView } from "react-native";
 import CardCoponets from "../commanComponents/CardCoponets";
 import TimeTable from './screens/timetable/timetable';
 import HomeWorks from "./screens/homework/homeWorks";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const home = () => {
-  // const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   return (
     <ScrollView>
       <View className="w-full gap-4">
-        <CardCoponets name="{user.name}" />
+        <CardCoponets name={user.teacher_Name} />
 
         {/* Wrap grid */}
         <View className="flex-row flex-wrap justify-between mt-4 gap-2">
-          <CardCoponets name="1" data="Class" className="w-[48%]" />
-          <CardCoponets name="A" data="Division" className="w-[48%]" />
+          <CardCoponets name={user ? user.class_name : "Loading..." } data="Class" className="w-[48%]" />
+          <CardCoponets name={user ? user.division : "Loading..." } data="Division" className="w-[48%]" />
           <CardCoponets name="8" data="Total Students" className="w-[48%]" />
           <CardCoponets name="Take Attendance" className="w-[48%]" />
           <CardCoponets name="Students List" className="w-[48%]" />

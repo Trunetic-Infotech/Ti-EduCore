@@ -70,7 +70,7 @@ const driverprofile = () => {
             <Text className='font-bold'>Profile Picture</Text>
             <Image
               className='rounded-full h-[200px] w-[200px]'
-              source={require("../../../../../assets/images/profile.jpg")}
+              source={require("../../../../../assets/images/Profile.jpg")}
             />
           </View>
         </View>

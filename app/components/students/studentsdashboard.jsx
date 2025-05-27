@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   FlatList,
   BackHandler,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,12 +27,48 @@ import AskQuestions from "./screens/RequestTickets/AskQuestions";
 import ViewAnswers from "./screens/RequestTickets/ViewAnswers";
 import Supports from "./screens/RequestTickets/Supports";
 import { useRouter } from "expo-router";
+import * as SecureStore from 'expo-secure-store'
+import axios from "axios";
+import { API_URL } from '@env';
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/features/authSlice";
 
 const studentsdashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const dispatch = useDispatch();
+  const router = useRouter();
   
+  
+
+
+  const fetchUser = async()=>{
+    try {
+      const userId = await SecureStore.getItemAsync('userId');
+      const token = await SecureStore.getItemAsync('token');
+      // console.log(userId);
+      // console.log(token);
+      const response = await axios.get(`${API_URL}/student/profile/${userId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      if(response.data.success){
+        dispatch(setUser(response.data.user))
+        // Alert.alert("True", "User profile Set")
+      }else{
+        Alert.alert("No user Found", response.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Internal Server Error");
+    }
+  }
+
+  useEffect(()=>{
+    fetchUser();
+  },[])
 
   useEffect(() => {
     const backAction = () => {
@@ -49,6 +86,19 @@ const studentsdashboard = () => {
 
     return () => backHandler.remove();
   }, [selectedComponent]);
+  
+
+  
+  const EventsMap = [
+    {
+      id: "1",
+      name: "Events",
+      subitem: {
+        key: "Events",
+        component: <Events/>,
+      }
+    }
+  ]
 
   const studyMaterial = [
     {
@@ -84,6 +134,10 @@ const studentsdashboard = () => {
       },
     },
   ];
+  useEffect(()=>{
+    console.log("Hello",selectedComponent);
+    
+  },[selectedComponent])
 
   const resultsMap = [
     {
@@ -161,6 +215,28 @@ const studentsdashboard = () => {
     },
   ]
 
+  const handleLogOut =  async()=>{
+    try {
+      const response = await axios.post(`${API_URL}/admin/logout`,
+        {withCredentials: true}
+      )
+
+      if(response.data.success){
+        
+        await SecureStore.deleteItemAsync('token');
+        await SecureStore.deleteItemAsync('userId');
+        Alert.alert("Logout Successfull", "User Logout Successfull");
+        router.push('/');
+       
+      }else{
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Logout Failed");
+    }
+  }
+
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
       {/* Custom Header */}
@@ -168,12 +244,11 @@ const studentsdashboard = () => {
       {/* Page Content */}
       <View className=" flex-1">
         {selectedComponent ? (
-          selectedComponent
+    selectedComponent?.subitem?.component
         ) : (
           // Default content
           <View>
-            <CurrentYearResults />
-            {/* <Home /> */}
+            <Home setSelectedComponent={setSelectedComponent} studyMaterial={studyMaterial} EventsMap={EventsMap}/>
           </View>
         )}
       </View>
@@ -199,7 +274,7 @@ const studentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Home />);
+                setSelectedComponent({ subitem: { component: <Home /> } });
                 setIsOpen(false);
               }}
             >
@@ -212,7 +287,7 @@ const studentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Profile />);
+                setSelectedComponent({ subitem: { component: <Profile /> } });
                 setIsOpen(false);
               }}
             >
@@ -245,7 +320,7 @@ const studentsdashboard = () => {
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       onPress={() => {
-                        setSelectedComponent(item.subitem.component);
+                        setSelectedComponent({ subitem: { component: item.subitem.component } });
                         setIsOpen(false); // Close the side menu after selection (optional)
                       }}
                       className="bg-[#e3eaf7] rounded-lg p-4 mb-3"
@@ -282,7 +357,7 @@ const studentsdashboard = () => {
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       onPress={() => {
-                        setSelectedComponent(item.subitem.component);
+                        setSelectedComponent({ subitem: { component: item.subitem.component } });
                         setIsOpen(false); // Close the side menu after selection (optional)
                       }}
                       className="bg-[#e3eaf7] rounded-lg p-4 mb-3"
@@ -319,7 +394,7 @@ const studentsdashboard = () => {
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       onPress={() => {
-                        setSelectedComponent(item.subitem.component);
+                        setSelectedComponent({ subitem: { component: item.subitem.component } });
                         setIsOpen(false); // Close the side menu after selection (optional)
                       }}
                       className="bg-[#e3eaf7] rounded-lg p-4 mb-3"
@@ -337,7 +412,7 @@ const studentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Events />);
+                setSelectedComponent({ subitem: { component: <Events /> } });
                 setIsOpen(false);
               }}
             >
@@ -354,7 +429,7 @@ const studentsdashboard = () => {
                 <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Library />);
+                setSelectedComponent({ subitem: { component: <Library /> } });
                 setIsOpen(false);
               }}
             >
@@ -390,7 +465,7 @@ const studentsdashboard = () => {
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       onPress={() => {
-                        setSelectedComponent(item.subitem.component);
+                        setSelectedComponent({ subitem: { component: item.subitem.component } });
                         setIsOpen(false); // Close the side menu after selection (optional)
                       }}
                       className="bg-[#e3eaf7] rounded-lg p-4 mb-3"
@@ -427,7 +502,7 @@ const studentsdashboard = () => {
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       onPress={() => {
-                        setSelectedComponent(item.subitem.component);
+                        setSelectedComponent({ subitem: { component: item.subitem.component } });
                         setIsOpen(false); // Close the side menu after selection (optional)
                       }}
                       className="bg-[#e3eaf7] rounded-lg p-4 mb-3"
@@ -438,9 +513,18 @@ const studentsdashboard = () => {
                     </TouchableOpacity>
                   )}
                 />
+          
               </View>
             )}
           </View>
+                {/* Logout fixed at bottom */}
+          <TouchableOpacity onPress={handleLogOut} className="bg-[#f1a621] p-3 rounded-md mt-4">
+            <View>
+              <Text className="text-black font-semibold text-center">
+                Logout
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )}
     </SafeAreaView>

@@ -26,10 +26,7 @@ const login = () => {
 
   const handleLogin = async () => {
     // console.log(email, password, role);
-    if(!email || !password || !role){
-      Alert.alert("Missing Fields", "Please fill in all required fields");
-      return;
-    }else{
+    
       try { 
         console.log(API_URL);
         
@@ -86,7 +83,7 @@ const login = () => {
 
         console.log(error);
       }
-    }
+    
   };
 
   return (

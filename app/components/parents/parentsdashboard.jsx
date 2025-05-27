@@ -15,17 +15,21 @@ import Home from "./home";
 import Studentprofile from "./screens/profile/studentprofile";
 import Teacherprofile from "./screens/profile/teacherprofile";
 import Attendence from "./screens/student/attendence";
-import Studentresults from "./screens/results/studentresults";
+
 import Timetable from "./screens/exam/timetable";
 import Studentcertificates from "./screens/progress/studentcertificates";
 import Otherrecords from "./screens/progress/otherrecords";
+import Feesstructure from "./screens/feesbilling/feesstructure";
 import Feesrecord from "./screens/feesbilling/feesrecord";
 import Payfees from "./screens/feesbilling/payfees";
 import Feesduehistory from "./screens/feesbilling/feesdue";
 import Addcomplaint from "./screens/complaint/addcomplaint";
 import Addfeedback from "./screens/complaint/addfeedback";
 import Result from "./screens/results/studentresults";
-import profile from "../teacher/screens/profile/profile";
+
+import Maps from "./screens/map/maps";
+
+
 
 const parentsdashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +68,7 @@ const parentsdashboard = () => {
       name: "Teacher Profile",
       subitem: {
         key: "teacherprofile",
-        component: <Studentprofile />,
+        component: <Teacherprofile />,
       },
     },
   ];
@@ -113,6 +117,14 @@ const parentsdashboard = () => {
   const FeesBilling = [
     {
       id: "1",
+      name: "Fees Structure",
+      subitem: {
+        key: "feesstructure",
+        component: <Feesstructure />,
+      },
+    },
+    {
+      id: "2",
       name: "Fees Record",
       subitem: {
         key: "feesrecord",
@@ -120,7 +132,7 @@ const parentsdashboard = () => {
       },
     },
     {
-      id: "2",
+      id: "3",
       name: "Pay Fees",
       subitem: {
         key: "payfees",
@@ -140,7 +152,7 @@ const parentsdashboard = () => {
 
   const Complaint = [
     {
-      id: "1",
+      id: "4",
       name: "Add Complaint",
       subitem: {
         key: "addcomplaint",
@@ -153,6 +165,16 @@ const parentsdashboard = () => {
       subitem: {
         key: "addfeedback",
         component: <Addfeedback />,
+      },
+    },
+  ];
+  const Map = [
+    {
+      id: "1",
+      name: "Map",
+      subitem: {
+        key: "map",
+        component: <Maps />,
       },
     },
   ];
@@ -192,7 +214,6 @@ const parentsdashboard = () => {
               Teacher Menus
             </Text>
 
-
             {/* Home Button */}
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
@@ -207,8 +228,8 @@ const parentsdashboard = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-
-
+            {/* 
+Student Profile Toggle Button */}
             <TouchableOpacity
               onPress={() =>
                 setActiveSection(activeSection === "profile" ? null : "profile")
@@ -281,8 +302,7 @@ const parentsdashboard = () => {
               </View>
             )}
 
-
-          
+            {/* Student Result Toggle Button */}
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
@@ -296,11 +316,9 @@ const parentsdashboard = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-            {/* Student List */}
 
-            {/* Student List */}
-
-            
+            {/* 
+            Exam Time Table Toggle Button */}
             <TouchableOpacity
               onPress={() =>
                 setActiveSection(
@@ -337,7 +355,7 @@ const parentsdashboard = () => {
                 />
               </View>
             )}
-            {/* Student Attendance Toggle Button */}
+            {/* Parent Progress Toggle Button */}
 
             <TouchableOpacity
               onPress={() =>
@@ -375,7 +393,7 @@ const parentsdashboard = () => {
                 />
               </View>
             )}
-
+            {/* Fees Biiling */}
             <TouchableOpacity
               onPress={() =>
                 setActiveSection(
@@ -413,6 +431,8 @@ const parentsdashboard = () => {
               </View>
             )}
 
+            {/* Complaint Toggle Button */}
+
             <TouchableOpacity
               onPress={() =>
                 setActiveSection(
@@ -449,6 +469,20 @@ const parentsdashboard = () => {
                 />
               </View>
             )}
+            {/* // Map */}
+            <TouchableOpacity
+              className="bg-gray-200 p-3 rounded-md mb-3"
+              onPress={() => {
+                setSelectedComponent(<Maps />);
+                setIsOpen(false);
+              }}
+            >
+              <View>
+                <Text className="text-black font-semibold text-center">
+                  Map
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           {/* Logout fixed at bottom */}

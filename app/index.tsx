@@ -49,6 +49,10 @@ export default function Index() {
 
   //   return () => clearTimeout(timer); // Cleanup on unmount
   // }, []);
+
+
+  
+
   return (
     <SafeAreaView className="flex-1" edges={["top", "bottom"]}>
       <View className="bg-gray-200 items-center justify-center h-full relative">
