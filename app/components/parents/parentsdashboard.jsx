@@ -1,6 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   BackHandler,
   FlatList,
   Text,
@@ -26,15 +27,92 @@ import Feesduehistory from "./screens/feesbilling/feesdue";
 import Addcomplaint from "./screens/complaint/addcomplaint";
 import Addfeedback from "./screens/complaint/addfeedback";
 import Result from "./screens/results/studentresults";
+import * as SecureStore from "expo-secure-store";
+import axios from "axios";
+import { API_URL } from "@env";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../../redux/features/authSlice";
 
 import Maps from "./screens/map/maps";
-
-
+import { set } from "lodash";
 
 const parentsdashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const [student, setStudent] = useState(null);
+
+ 
+  const [students, setStudents] = useState([]);
+  const [studentId, setStudentId] = useState("");
+
+  // result
+  const [teacher_id, setTeacher_id] = useState(null);
+  const [progressId, setProgressId] = useState("");
+
+  const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
+
+  const fetchUser = async () => {
+    try {
+
+      const userId = await SecureStore.getItemAsync("userId");
+      const token = await SecureStore.getItemAsync("token");
+      console.log(userId);
+      console.log(token);
+      console.log(API_URL, `/parents/profile/${userId}`);
+      const response = await axios.get(`${API_URL}/parents/profile/${userId}`, {
+        headers: {
+          Authorization:`Bearer ${token}`,
+        },
+      });
+     
+        dispatch(setUser(response.data.parent));
+        // Alert.alert("True", "User profile Set")
+
+      
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Internal Server Error");
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  // Student Data
+
+  const fetchStudentData = async () => {
+    try {
+      const token = await SecureStore.getItemAsync("token");
+      const response = await axios.get(
+        `${API_URL}/parents/get-student/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data.profile,'by');
+      if (response.data && response.data.profile) {
+        setStudents(response.data.profile);
+      } else {
+        Alert.alert(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert(error.response?.data?.message || "Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchStudentData();
+    }
+  }, [user]);
 
   useEffect(() => {
     const backAction = () => {
@@ -59,7 +137,13 @@ const parentsdashboard = () => {
       name: "Student Profile",
       subitem: {
         key: "studentprofile",
-        component: <Studentprofile />,
+        component: (
+          <Studentprofile
+            student={student}
+            studentId={studentId}
+            setStudentId={setStudentId}
+          />
+        ),
       },
     },
 
@@ -90,7 +174,7 @@ const parentsdashboard = () => {
       name: "Time Table",
       subitem: {
         key: "timetable",
-        component: <Timetable />,
+        component: <Timetable students={students} studentId={studentId} />,
       },
     },
   ];
@@ -190,7 +274,7 @@ const parentsdashboard = () => {
         ) : (
           // Default content
           <View>
-            <Home />
+            <Home  students={students}/>
           </View>
         )}
       </View>
@@ -218,7 +302,7 @@ const parentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(Home);
+                setSelectedComponent(<Home students={students} />);
                 setIsOpen(false);
               }}
             >
@@ -306,7 +390,9 @@ Student Profile Toggle Button */}
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Result />);
+                setSelectedComponent(
+                  <Result studentId={studentId} setProgressId={setProgressId} />
+                );
                 setIsOpen(false);
               }}
             >
