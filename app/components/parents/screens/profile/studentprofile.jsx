@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import {API_URL} from '@env'
 import * as SecureStore from 'expo-secure-store'
 import axios from 'axios'
+import defaultProfile from "../../../../../assets/images/profile.jpg"
 
 const studentprofile = ({studentId}) => {
 

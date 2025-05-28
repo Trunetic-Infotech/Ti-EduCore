@@ -16,7 +16,7 @@ import { API_URL } from "@env";
 
 const StudentProfile = ({student_id}) => {
 
-  const reduxUser = useSelector((state) => state.auth.user);
+  
   const [details, setDetails] = useState(null);
 
   const fetchUser = async () => {
@@ -96,10 +96,8 @@ const StudentProfile = ({student_id}) => {
               source={
                 details?.images
                   ? { uri: details.images }
-                  : reduxUser?.images
-                  ? { uri: reduxUser.images }
-                  : defaultProfile
-              }
+                  : defaultProfile}
+                  
             />
           </View>
         </View>

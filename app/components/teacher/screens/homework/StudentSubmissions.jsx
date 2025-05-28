@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Linking } from "react-native";
 
 const StudentSubmissions = ({ homeworkList, homework_id }) => {
   const homework = homeworkList.find((hw) => hw.homework_id === homework_id);
+
+
+
+  // console.log(homework_id, typeof homework_id)
+  // console.log("Hehehehehehehehhehehe",homework_id);
+  // console.log("Hehehehehehehehhehehe",homework);
+  // console.log("Hehehehehehehehhehehe",homeworkList);
+
+
+
+
+  if (!homeworkList || homeworkList.length === 0) {
+  return (
+    <View className="p-4">
+      <Text className="text-center text-gray-500">Loading homework...</Text>
+    </View>
+  );
+}
+
 
   if (!homework) {
     return (
@@ -36,7 +55,7 @@ const StudentSubmissions = ({ homeworkList, homework_id }) => {
           {homework.student_submissions.map((student, index) => (
             <View
               key={index}
-              className="bg-white rounded-xl p-4 border border-gray-300 shadow-sm"
+              className="bg-white rounded-xl mt-8 p-4 border border-gray-300 shadow-sm"
             >
               <Text className="text-base font-semibold text-[#305495] mb-2">
                 👤 {student.student_name}

@@ -108,7 +108,7 @@ const TeachersDashboard = () => {
           },
         }
       );
-      console.log(response);
+      console.log("Homeworks",response.data.homeworkList);
       if (response.data && response.data.homeworkList) {
         setHomeworkList(response.data.homeworkList);
       } else {
@@ -175,8 +175,8 @@ const TeachersDashboard = () => {
     component:
       selectedComponent?.subitem?.component ?? (
         <Allhomeworklist
-          homeworkList={homeworkList}
           getHomeworkAndSubmissions={getHomeworkAndSubmissions}
+          homeworkList={homeworkList}
           setHomework_id={setHomework_id}
           setSelectedComponent={setSelectedComponent}
         />
@@ -232,14 +232,7 @@ const TeachersDashboard = () => {
         component: <Uploadvideoleacture />,
       },
     },
-    // {
-    //   "Student Submissions": (
-    //   <StudentSubmissions
-    //     homeworkList={homeworkList}
-    //     homework_id={homework_id}
-    //   />
-    // ),
-    // }
+    
   ];
 
   const resultsMap = [
@@ -403,7 +396,7 @@ const TeachersDashboard = () => {
         ) : (
           // Default content
           <View>
-            <Home />
+            <Home setSelectedComponent={setSelectedComponent} setHomework_id={setHomework_id} getHomeworkAndSubmissions={getHomeworkAndSubmissions} homeworkList={homeworkList} homework_id={homework_id} />
           </View>
         )}
       </View>
@@ -429,9 +422,8 @@ const TeachersDashboard = () => {
             </Text>
      <TouchableOpacity
         className="bg-gray-200 p-3 rounded-md mb-3"
-        onPress={() => setSelectedComponent(<Home 
-        setHomework_id={setHomework_id}
-        getHomeworkAndSubmissions={getHomeworkAndSubmissions} />)}
+        onPress={() => {setSelectedComponent(<Home 
+        setSelectedComponent={setSelectedComponent} setHomework_id={setHomework_id} getHomeworkAndSubmissions={getHomeworkAndSubmissions} homeworkList={homeworkList} homework_id={homework_id} />); setIsOpen(false);}}
       >
         <Text className="text-black font-semibold text-center">Home</Text>
       </TouchableOpacity>
@@ -440,7 +432,7 @@ const TeachersDashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Profile />);
+                setSelectedComponent(<Profile fetchUser={fetchUser}/>);
                 setIsOpen(false);
               }}
             >

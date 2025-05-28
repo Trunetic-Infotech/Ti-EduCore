@@ -90,6 +90,7 @@ const Home = ({ setSelectedComponent, studyMaterial, EventsMap }) => {
     if (user && user.subclass_id && user.id) {
       getPendingHomeworks();
       getTimeTable();
+      
     }
   }, [user]);
 
