@@ -35,11 +35,13 @@ import { setUser } from "../../../redux/features/authSlice";
 
 import Maps from "./screens/map/maps";
 import { set } from "lodash";
+import { useRouter } from "expo-router";
 
 const parentsdashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const router = useRouter();
 
 
  
@@ -162,7 +164,7 @@ const parentsdashboard = () => {
       name: "Attendance",
       subitem: {
         key: "attendance",
-        component: <Attendence />,
+        component: <Attendence studentId={studentId} students={students} />,
       },
     },
   ];
@@ -203,7 +205,7 @@ const parentsdashboard = () => {
       name: "Fees Structure",
       subitem: {
         key: "feesstructure",
-        component: <Feesstructure />,
+        component: <Feesstructure students={students} />,
       },
     },
     {
@@ -262,6 +264,29 @@ const parentsdashboard = () => {
     },
   ];
 
+
+  const handleLogOut =  async()=>{
+    try {
+      const response = await axios.post(`${API_URL}/admin/logout`,
+        {withCredentials: true}
+      )
+
+      if(response.data.success){
+        
+        await SecureStore.deleteItemAsync('token');
+        await SecureStore.deleteItemAsync('userId');
+        Alert.alert("Logout Successfull", "User Logout Successfull");
+        router.push('/');
+       
+      }else{
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Logout Failed");
+    }
+  }
+
   useEffect(()=>{
     console.log(teacher_id)
   },[teacher_id])
@@ -278,7 +303,7 @@ const parentsdashboard = () => {
         ) : (
           // Default content
           <View>
-            <Home  students={students} setStudentId={setStudentId} setTeacher_id={setTeacher_id}/>
+            <Home studentId={studentId} setSelectedComponent={setSelectedComponent}  students={students} setStudentId={setStudentId} setTeacher_id={setTeacher_id}/>
           </View>
         )}
       </View>
@@ -306,7 +331,7 @@ const parentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Home students={students} setStudentId={setStudentId} setTeacher_id={setTeacher_id} />);
+                setSelectedComponent(<Home studentId={studentId} setSelectedComponent={setSelectedComponent} students={students} setStudentId={setStudentId} setTeacher_id={setTeacher_id} />);
                 setIsOpen(false);
               }}
             >
@@ -395,7 +420,7 @@ Student Profile Toggle Button */}
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
                 setSelectedComponent(
-                  <Result studentId={studentId} setProgressId={setProgressId} />
+                  <Result studentId={studentId} setProgressId={setProgressId} setSelectedComponent={setSelectedComponent} />
                 );
                 setIsOpen(false);
               }}
@@ -576,7 +601,7 @@ Student Profile Toggle Button */}
           </View>
 
           {/* Logout fixed at bottom */}
-          <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4">
+          <TouchableOpacity onPress={handleLogOut} className="bg-[#f1a621] p-3 rounded-md mt-4">
             <View>
               <Text className="text-black font-semibold text-center">
                 Logout
