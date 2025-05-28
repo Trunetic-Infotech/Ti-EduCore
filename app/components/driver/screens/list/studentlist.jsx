@@ -32,6 +32,7 @@ const StudentList = () => {
   const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
  const currentStudents = students;
 
+ 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);

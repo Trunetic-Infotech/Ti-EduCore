@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, ScrollView, Alert } from "react-native";
+import { useSelector } from "react-redux";
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+import { API_URL } from '@env';
 
 const demoStudents = [
   {
@@ -39,11 +43,13 @@ const demoStudents = [
 
 const StudentsProgress = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const filteredStudents = progress.filter(student =>
+  (student.student_name || '').toLowerCase().includes(searchTerm.toLowerCase())
+);
 
-  const filteredStudents = demoStudents.filter(student =>
-    student.Students_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
+    
+    
   return (
     <View className="flex-1 bg-gray-100 p-4">
       {/* Search Bar */}
@@ -63,7 +69,7 @@ const StudentsProgress = () => {
         {filteredStudents.length === 0 ? (
           <Text className="text-center text-gray-500 italic ">No students found.</Text>
         ) : (
-          filteredStudents.map((student, index) => (
+          filteredStudents.map((prog, index) => (
             <View
               key={index}
               className={`rounded-xl p-6 mb-6 ${
@@ -71,51 +77,51 @@ const StudentsProgress = () => {
               }`}
             >
               <Text className="text-xl font-semibold text-[#305495] mb-2">
-                {student.Students_name}
+                {prog.student_name}
               </Text>
 
               <Text className="text-sm mb-1">
                 <Text className="font-medium text-[#305495]">Student ID: </Text>
-                {student.Students_ID}
+                {prog.roll_number}
               </Text>
 
               <Text className="text-sm mb-1">
                 <Text className="font-medium text-[#305495]">Class: </Text>
-                {student.class} - {student.Divison}
+                {prog.class_name} - {prog.division}
               </Text>
 
               <Text className="text-sm mb-1">
                 <Text className="font-medium text-[#305495]">Total Days: </Text>
-                {student.total_days}
+                {prog.total_days}
               </Text>
 
               <Text className="text-sm mb-1">
                 <Text className="font-medium text-[#305495]">Present Days: </Text>
-                {student.Presend_Days}
+                {prog.total_days}
               </Text>
 
               <Text className="text-sm mb-1">
                 <Text className="font-medium text-[#305495]">Absent Days: </Text>
-                {student.Absent_Days}
+                {prog.total_absent}
               </Text>
 
               <Text className="text-sm mb-3">
                 <Text className="font-medium text-[#305495]">Attendance: </Text>
                 <Text
                   className={`font-bold ${
-                    parseFloat(student.Attendance) >= 90
+                    parseFloat(prog.attendance_perecentage) >= 90
                       ? "text-green-600"
-                      : parseFloat(student.Attendance) >= 75
+                      : parseFloat(prog.attendance_perecentage) >= 75
                       ? "text-yellow-600"
                       : "text-red-600"
                   }`}
                 >
-                  {student.Attendance}
+                  {prog.Attendance}
                 </Text>
               </Text>
 
               <Text className="text-xs text-gray-600 italic">
-                Last Updated: {student.Submit_date}
+                Last Updated: {prog.Submit_date}
               </Text>
             </View>
           ))
