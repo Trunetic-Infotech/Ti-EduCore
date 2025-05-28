@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Linking, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Linking, Alert } from "react-native";
 import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
@@ -10,7 +10,6 @@ import { API_URL } from '@env';
 const Events = () => {
    const [allEvents, setAllEvents] = useState([]);
    const user = useSelector((state)=> state.auth.user);
-   const [loading, setLoading] = useState(true); 
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,22 +39,12 @@ const Events = () => {
     } catch (error) {
       console.log(error);
       Alert.alert("Error",error.response?.data?.message || "Something went wrong!");
-    }finally {
-    setLoading(false); 
-  }
+    }
   };
-   useEffect(()=>{
+  
+  useEffect(()=>{
     getEvents()
   },[])
-  if (loading) {
-  return (
-    <View className="flex-1 justify-center items-center">
-      <ActivityIndicator size="large" color="#305495" />
-    </View>
-  );
-}
-  
- 
   return (
     <View className="flex-1 bg-gray-100 p-4">
       {/* Search bar */}

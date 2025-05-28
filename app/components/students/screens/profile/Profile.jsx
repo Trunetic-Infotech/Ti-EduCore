@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -19,6 +20,8 @@ import { API_URL } from '@env';
 const Profile = ({fetchUser}) => {
   const user = useSelector((state) => state.auth.user);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
 
   const data = [
     {
@@ -133,6 +136,7 @@ const Profile = ({fetchUser}) => {
   });
 
   try {
+     setUploading(true);
     const token = await SecureStore.getItemAsync("token");
 
     const response = await axios.patch(`${API_URL}/student/upload/images/${user.id}`, formData, {
@@ -154,6 +158,9 @@ const Profile = ({fetchUser}) => {
   } catch (error) {
     console.error(error);
     Alert.alert("Error", "Internal Server Error");
+  }
+  finally {
+    setUploading(false); 
   }
 };
 
@@ -185,16 +192,24 @@ const Profile = ({fetchUser}) => {
 
           <View className="items-center gap-2 mb-4 relative">
             <Text className="font-bold">Profile Picture</Text>
-            <Image
-              className="rounded-full h-[200px] w-[200px]"
-              source={user.images ? { uri: user.images } : defaultProfile}
-            />
-            <TouchableOpacity
-              onPress={openImagePicker}
-              className="absolute bottom-[-4] right-[30%]"
-            >
-              <Icon name="add-circle" size={56} color="black" />
-            </TouchableOpacity>
+             {uploading ? (
+    <View className="h-[200px] w-[200px] rounded-full justify-center items-center bg-gray-200">
+      <ActivityIndicator size="large" color="#305495" />
+    </View>
+  ) : (
+    <>
+      <Image
+        className="rounded-full h-[200px] w-[200px]"
+        source={user.images ? { uri: user.images } : defaultProfile}
+      />
+      <TouchableOpacity
+        onPress={openImagePicker}
+        className="absolute bottom-[-4] right-[30%]"
+      >
+        <Icon name="add-circle" size={56} color="black" />
+      </TouchableOpacity>
+    </>
+  )}
           </View>
         </View>
       }

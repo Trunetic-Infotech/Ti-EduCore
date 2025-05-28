@@ -300,7 +300,7 @@ const studentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent({ subitem: { component: <Home /> } });
+                setSelectedComponent({ subitem: { component: <Home setSelectedComponent={setSelectedComponent} studyMaterial={studyMaterial} EventsMap={EventsMap} /> } });
                 setIsOpen(false);
               }}
             >

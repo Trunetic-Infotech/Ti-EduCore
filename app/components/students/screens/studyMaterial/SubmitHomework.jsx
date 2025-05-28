@@ -25,6 +25,14 @@ const SubmitHomework = ({ pendingHw }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false); // <--- Loading state
 
+  useEffect(()=>{
+    if(pendingHw){
+      console.log(pendingHw);
+      
+      setSelectedHw(pendingHw)
+    }
+  },[]);
+
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
@@ -71,6 +79,8 @@ const SubmitHomework = ({ pendingHw }) => {
   };
 
   const submitHomework = async () => {
+    console.log(selectedHw);
+    
     if (!selectedHw) {
       Alert.alert("Error", "Please select a homework");
       return;
@@ -209,7 +219,7 @@ const SubmitHomework = ({ pendingHw }) => {
             <View className="w-[48%] items-center gap-2">
               <Text className="font-bold text-gray-600">Homework</Text>
               <View className="border border-[#305495] w-full rounded-md p-4 bg-white">
-                <Text className="text-gray-800">{pendingHw.description}</Text>
+                <Text className="text-gray-800">{pendingHw.description }</Text>
               </View>
             </View>
           ) : (
