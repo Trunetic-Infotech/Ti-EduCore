@@ -1,14 +1,15 @@
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View , ScrollView} from "react-native";
 import * as SecureStore from "expo-secure-store"; // Correct usage
 import { Feather } from "@expo/vector-icons";
 import { API_URL } from "@env";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import ViewResults from "../../../students/screens/results/ViewResults";
 
 // import { getItem } from 'expo-secure-store';
 
-const studentresults = ({setProgressId}) => {
+const studentresults = ({setProgressId, setSelectedComponent}) => {
   const [result, setResult] = useState([]);
 
   const user = useSelector((state) => state.auth.user);
@@ -26,7 +27,7 @@ const studentresults = ({setProgressId}) => {
           },
         }
       );
-      console.log(response, "hello");
+      console.log(response.data.data, "hello");
       if (response.data && response.data.data) {
         setResult(response.data.data);
       } else {
@@ -45,7 +46,7 @@ const studentresults = ({setProgressId}) => {
   }, [user]);
 
   return (
-    <View className="p-4 bg-gray-100 min-h-full">
+    <ScrollView className="p-4 bg-gray-100 min-h-full">
       {/* Search Input */}
       <View className="items-center justify-center relative mb-4">
         <TextInput
@@ -67,6 +68,10 @@ const studentresults = ({setProgressId}) => {
             key={index}
             className="bg-white rounded-xl shadow-md p-4 space-y-3 mb-4"
           >
+             <View className='flex-row justify-center gap-3'>
+            <Text className="text-gray-500 font-medium">Exam:</Text>
+            <Text className="font-bold text-gray-800">{result.exam_name}</Text>
+          </View>
             <View className="flex-row justify-between">
               <Text className="text-gray-500 font-medium">Roll No</Text>
               <Text className="font-semibold text-gray-800">
@@ -117,8 +122,8 @@ const studentresults = ({setProgressId}) => {
             <TouchableOpacity className="mt-4 bg-[#f1a621] rounded-xl py-2 px-4 items-center">
               <Text
                 onPress={() => {
-                  setProgressId(item.id);
-                  setShowComponent("View Result");
+                  setProgressId(result.id);
+                  setSelectedComponent(<ViewResults progressId={result.id}/>);
                 }}
                 className="text-white font-bold"
               >
@@ -132,7 +137,7 @@ const studentresults = ({setProgressId}) => {
           Loading or No results found
         </Text>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

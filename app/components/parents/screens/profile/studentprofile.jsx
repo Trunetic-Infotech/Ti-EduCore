@@ -10,6 +10,8 @@ const studentprofile = ({studentId}) => {
   const user = useSelector((state) => state.auth.user)
 
   const [student, setStudent] = useState([]);
+  console.log(studentId);
+  
 
   const getStudentData = async()=>{
     try {
@@ -44,7 +46,7 @@ console.log("hello",student)
   const data = [
     {
       label: "Student Roll No",
-      value: "101",
+      value: student ? student.roll_number: "loading"
     },
     {
       label: "Student Name",
@@ -52,19 +54,19 @@ console.log("hello",student)
     },
     {
       label: "Contact No.",
-      value: "contact"
+      value: student ? student.phone_number : "loading"
     },
     {
       label: "GR No",
-      value: "ADM1001",
+      value: student ? student.admission_id : "loading"
     },
     {
       label: "Email ID",
-      value: "asad@gmail.com",
+      value: student ? student.email :"loading"
     },
     {
       label: "Date Of Birth",
-      value: "24/03/2025",
+      value: student ? student.date_of_birth : "loading"
     },
     {
       label: "Leaving Certificate",
@@ -72,27 +74,27 @@ console.log("hello",student)
     }, 
     {
       label: "Aadhar Card Number",
-      value: "666688554477",
+      value: student ? student.aadhaar_number :"loading"
     }, 
     {
       label: "Admission Date",
-      value: "24/03/2025",
+      value: student ? student.admission_date :"loading"
     },
     {
       label: "Current Class",
-      value: "1",
+      value: student ? student.class_name : "loading"
     },
     {
       label: "Sub Class",
-      value: "A",
+      value: student ? student.subclass_id : "loading"
     },
     {
       label: "Status",
-      value: "Active",
+      value: student ? student.status : "loading"
     },
     {
       label: "Address",
-      value: "Thane",
+      value: student ? student.address : "loading"
     }, 
     
   ]

@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import Header from "./../commanComponents/header";
-import Home from "../students/screens/home/Home"
+import Home from "./screens/home/Home"
 import Profile from "./screens/profile/Profile";
 import Homework from "./screens/studyMaterial/Homework";
 import SubmitHomework from "./screens/studyMaterial/SubmitHomework";
@@ -300,7 +300,7 @@ const studentsdashboard = () => {
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent({ subitem: { component: <Home /> } });
+                setSelectedComponent({ subitem: { component: <Home setSelectedComponent={setSelectedComponent} studyMaterial={studyMaterial} EventsMap={EventsMap} /> } });
                 setIsOpen(false);
               }}
             >

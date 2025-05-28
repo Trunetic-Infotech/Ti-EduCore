@@ -1,42 +1,73 @@
-import { View, Text, Image, FlatList, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, FlatList, ScrollView, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import * as SecureStore from 'expo-secure-store'
+import axios from 'axios'
+import {API_URL} from '@env'
 
-const teacherprofile = () => {
+const teacherprofile = ({teacher_id}) => {
+
+  const [teacher, setTeacher] = useState("");
 
 
   const user = useSelector ((state) => state.auth.user)
 
-  console.log(user)
+  console.log(teacher_id)
+
+    const getTeacher = async()=>{
+    try {
+      const token = await SecureStore.getItemAsync("token");
+      const response = await axios.get(`${API_URL}/parents/get-teacher/${teacher_id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      console.log(response.data.profile);
+
+      if(response.data && response.data.profile){
+        setTeacher(response.data.profile);
+      }else{
+        Alert.alert(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert(error.response?.data?.message || " Something went wrong!");
+    }
+  }
+
+  useEffect(()=>{
+    getTeacher();
+  },[])
 
   const data = [
    
     {
       label: "Teacher Name",
-      value: user ? user.parents_name:"Amar",
+      value: teacher ? teacher.teacher_Name : "loading"
     },
     {
       label: "Contact No.",
-      value: "8868542153",
+      value: teacher ? teacher.phone_number : "loading"
     },
   
     {
       label: "Date Of Join",
-      value: "24/03/2025",
+      value: teacher ? teacher.date_of_join : "loading"
     },
     {
       label: "Experiance",
-      value: "8 Years",
+      value: teacher ? teacher.experience : "loading"
     }, 
    
   
     {
       label: "Current Class",
-      value: "6",
+      value: teacher ? teacher.class_name : "loading"
     },
     {
       label: "Division",
-      value: "A",
+      value: teacher ? teacher.division : "loading"
     },
   
     
