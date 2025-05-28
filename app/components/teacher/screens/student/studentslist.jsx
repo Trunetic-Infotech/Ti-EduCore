@@ -102,10 +102,6 @@ useEffect(() => {
          <TouchableOpacity
   className="bg-gray-800 px-4 py-2 rounded-full"
   onPress={() =>
-    // router.push({
-    //   pathname:  "./StudentProfile",
-    //   params: { student_id: item.id },
-    // })
     setSelectedComponent(<StudentProfile student_id={item.id} />)
   }
 >

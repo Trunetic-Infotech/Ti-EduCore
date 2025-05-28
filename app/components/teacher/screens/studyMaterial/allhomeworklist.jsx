@@ -16,9 +16,9 @@ const AllHomeworkList = ({ homeworkList, getHomeworkAndSubmissions, setHomework_
   const handleEdit = (id) => console.log(`Edit clicked for ${id}`);
   const handleDelete = (id) => console.log(`Delete clicked for ${id}`);
 
-  useEffect(() => {
-    getHomeworkAndSubmissions();
-  }, []);
+  // useEffect(() => {
+  //   getHomeworkAndSubmissions();
+  // }, []);
 
   return (
     <ScrollView className="flex-1 bg-gray-100 p-4">
@@ -62,16 +62,14 @@ const AllHomeworkList = ({ homeworkList, getHomeworkAndSubmissions, setHomework_
         <TouchableOpacity
           onPress={() => {
             setHomework_id(hw.homework_id);
-            setSelectedComponent({
-              subitem: {
-                component: (
-                  <StudentSubmissions
+           
+               
+                  setSelectedComponent(<StudentSubmissions
                     homeworkList={homeworkList}
                     homework_id={hw.homework_id}
-                  />
-                ),
-              },
-            });
+                  />)
+              
+              
           }}
         >
           <Text className="text-sm text-[#305495] font-semibold underline ml-2">

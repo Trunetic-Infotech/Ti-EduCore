@@ -3,11 +3,12 @@ import { Entypo, Feather } from '@expo/vector-icons';
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 const allevents = () => {
   const [allEvents, setAllEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const user = useSelector((state) => state.auth.user);
   // console.log(user.admin_id)
@@ -31,6 +32,8 @@ const allevents = () => {
     } catch (error) {
       console.log(error);
       Alert.alert("Error",error.response?.data?.message || "Something went wrong!");
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -38,10 +41,17 @@ const allevents = () => {
     getEvents()
   }, [])
 
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#305495" />
+      </View>
+    );
+  }
   
-useEffect(() => {
-  console.log("Fetched Events: ", allEvents);
-}, [allEvents]);
+// useEffect(() => {
+//   console.log("Fetched Events: ", allEvents);
+// }, [allEvents]);
 
   const events = [
     { id: '1', name: 'Pooja', date: '25/02/25', starttime: '2025-04-25T18:30:00.000Z', description: 'Hello Everyone' },
@@ -82,19 +92,26 @@ useEffect(() => {
 
           <View className="flex-row justify-between">
             <Text className="text-gray-500 font-medium">Event Date</Text>
-            <Text className="font-semibold text-gray-800">{item.events_date}</Text>
+            <Text className="font-semibold text-gray-800"> {new Date(item.events_date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })}</Text>
           </View>
 
           <View className="flex-row justify-between">
             <Text className="text-gray-500 font-medium">Event Start Time</Text>
-            <Text className="font-semibold text-gray-800">{item.start_time}</Text>
+            <Text className="font-semibold text-gray-800"> {new Date(`1970-01-01T${item.start_time}`).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  })}</Text>
           </View>
 
-          <View className="flex-row justify-between">
+          <View className="w-full items-center">
             <Text className="text-gray-500 font-medium">Event Description</Text>
             <Text className="font-semibold text-yellow-600">{item.description}</Text>
           </View>
-          <TouchableOpacity className="mt-4 bg-[#f1a621] rounded-xl gap-2 py-2 px-4 items-center flex-row justify-center space-x-2">
+          <TouchableOpacity onPress={()=> Linking.openURL(item.images)} className="mt-4 bg-[#f1a621] rounded-xl gap-2 py-2 px-4 items-center flex-row justify-center space-x-2">
             <Text className="text-white font-bold">View Event Image </Text>
             <Entypo name="eye" size={24} color="white" />
           </TouchableOpacity>
