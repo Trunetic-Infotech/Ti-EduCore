@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   View,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from "./../commanComponents/header";
@@ -248,7 +249,7 @@ const TeachersDashboard = () => {
       name: "All Students Marks",
       subitem: {
         key: "allstudentsmarks",
-        component: <Allstudentsmarks />,
+        component: <Allstudentsmarks setSelectedComponent={setSelectedComponent} />,
       },
     },
     {
@@ -390,7 +391,28 @@ const TeachersDashboard = () => {
     },
   ];
 
-  
+  const handleLogOut =  async()=>{
+    try {
+      const response = await axios.post(`${API_URL}/admin/logout`,
+        {withCredentials: true}
+      )
+
+      if(response.data.success){
+        
+        await SecureStore.deleteItemAsync('token');
+        await SecureStore.deleteItemAsync('userId');
+        Alert.alert("Logout Successfull", "User Logout Successfull");
+        router.push('/');
+       
+      }else{
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Logout Failed");
+    }
+  }
+
 
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
@@ -790,7 +812,7 @@ const TeachersDashboard = () => {
           </View>
 
           {/* Logout fixed at bottom */}
-          <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4">
+          <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4" onPress={handleLogOut}>
             <View>
               <Text className="text-black font-semibold text-center">
                 Logout

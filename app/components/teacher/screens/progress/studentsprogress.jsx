@@ -1,55 +1,64 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, ScrollView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { useSelector } from "react-redux";
-import * as SecureStore from 'expo-secure-store';
-import axios from 'axios';
-import { API_URL } from '@env';
-
-const demoStudents = [
-  {
-    Students_ID: "1",
-    Students_name: "Amar Bhaieeeee",
-    class: "10",
-    Divison: "A",
-    Submit_date: "2025-06-10",
-    total_days: "30",
-    Presend_Days: "25",
-    Absent_Days: "5",
-    Attendance: "83.33%",
-  },
-  {
-    Students_ID: "2",
-    Students_name: "Rahul Sharma",
-    class: "9",
-    Divison: "B",
-    Submit_date: "2025-06-11",
-    total_days: "28",
-    Presend_Days: "27",
-    Absent_Days: "1",
-    Attendance: "96.42%",
-  },
-  {
-    Students_ID: "3",
-    Students_name: "Sana Khan",
-    class: "10",
-    Divison: "A",
-    Submit_date: "2025-06-09",
-    total_days: "30",
-    Presend_Days: "30",
-    Absent_Days: "0",
-    Attendance: "100%",
-  },
-];
+import * as SecureStore from "expo-secure-store";
+import axios from "axios";
+import { API_URL } from "@env";
 
 const StudentsProgress = () => {
+  const [progress, setProgress] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredStudents = progress.filter(student =>
-  (student.student_name || '').toLowerCase().includes(searchTerm.toLowerCase())
-);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const studentsPerPage = 12;
 
+  const user = useSelector((state) => state.auth.user);
 
-    
-    
+  const getStudentAttendanceProgress = async (page = 1) => {
+    try {
+      const token = await SecureStore.getItem("token");
+
+      const response = await axios.get(
+        `${API_URL}/attendance/get-subclass-student-progress/attendance?page=${page}&limit=${studentsPerPage}&class_id=${user.class_id}&subclass_id=${user.subclass_id}&admin_id=${user.admin_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data && response.data.data) {
+        setProgress(response.data.data);
+        setTotalPages(response.data.totalPages || 1);
+      } else {
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", error.response?.data?.message || "Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    getStudentAttendanceProgress();
+  }, []);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    getStudentAttendanceProgress(newPage);
+  };
+
+  const filteredStudents = progress.filter((student) =>
+    (student.student_name || "").toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <View className="flex-1 bg-gray-100 p-4">
       {/* Search Bar */}
@@ -67,7 +76,7 @@ const StudentsProgress = () => {
       {/* Student Attendance Cards */}
       <ScrollView showsVerticalScrollIndicator={false}>
         {filteredStudents.length === 0 ? (
-          <Text className="text-center text-gray-500 italic ">No students found.</Text>
+          <Text className="text-center text-gray-500 italic">No students found.</Text>
         ) : (
           filteredStudents.map((prog, index) => (
             <View
@@ -97,7 +106,7 @@ const StudentsProgress = () => {
 
               <Text className="text-sm mb-1">
                 <Text className="font-medium text-[#305495]">Present Days: </Text>
-                {prog.total_days}
+                {prog.total_present}
               </Text>
 
               <Text className="text-sm mb-1">
@@ -109,24 +118,55 @@ const StudentsProgress = () => {
                 <Text className="font-medium text-[#305495]">Attendance: </Text>
                 <Text
                   className={`font-bold ${
-                    parseFloat(prog.attendance_perecentage) >= 90
+                    parseFloat(prog.attendance_percentage) >= 90
                       ? "text-green-600"
-                      : parseFloat(prog.attendance_perecentage) >= 75
+                      : parseFloat(prog.attendance_percentage) >= 75
                       ? "text-yellow-600"
                       : "text-red-600"
                   }`}
                 >
-                  {prog.Attendance}
+                  {prog.attendance_percentage}%
                 </Text>
-              </Text>
-
-              <Text className="text-xs text-gray-600 italic">
-                Last Updated: {prog.Submit_date}
               </Text>
             </View>
           ))
         )}
       </ScrollView>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <View className="flex-row justify-between items-center mt-4">
+          <TouchableOpacity
+            disabled={currentPage === 1}
+            onPress={() => handlePageChange(currentPage - 1)}
+          >
+            <Text
+              className={`text-blue-600 text-lg ${
+                currentPage === 1 ? "opacity-30" : "opacity-100"
+              }`}
+            >
+              ◀ Prev
+            </Text>
+          </TouchableOpacity>
+
+          <Text className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </Text>
+
+          <TouchableOpacity
+            disabled={currentPage === totalPages}
+            onPress={() => handlePageChange(currentPage + 1)}
+          >
+            <Text
+              className={`text-blue-600 text-lg ${
+                currentPage === totalPages ? "opacity-30" : "opacity-100"
+              }`}
+            >
+              Next ▶
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
