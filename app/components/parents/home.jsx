@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import CardCoponets from "../commanComponents/CardCoponets";
+import attendence from "./screens/student/attendence";
 
 const home = ({ students, setStudentId, setTeacher_id }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +27,7 @@ const home = ({ students, setStudentId, setTeacher_id }) => {
 
   return (
     <View>
-      <View className="gap-4  flex-row flex-wrap relative">
+      <View className="gap-2  flex-row flex-wrap relative">
         <CardCoponets
           name={user ? user.parents_name : "loading"}
           className="w-full"
@@ -34,7 +35,7 @@ const home = ({ students, setStudentId, setTeacher_id }) => {
 
         <TouchableOpacity>
           <View>
-            <View className="   bg-[#F5F1F1]  border border-[#305495] items-center justify-center p-4 rounded-xl w-[180px]   ">
+            <View className="   bg-[#F5F1F1]  border border-[#305495] items-center justify-center p-4 rounded-xl w-[45vw]   ">
               <Text>Select A Student:</Text>
               <View className="mt-1">
                 <TouchableOpacity
@@ -64,6 +65,7 @@ const home = ({ students, setStudentId, setTeacher_id }) => {
                       onPress={() => {
                         setSelectedStudent(student);
                         setStudentId(student.id);
+                        setTeacher_id(student.teacher_id);
                         setIsOpen(false);
                       }}
                       onPressIn={() => setPressedItem(index)}

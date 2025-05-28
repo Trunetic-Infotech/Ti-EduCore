@@ -31,7 +31,7 @@ const feesrecord = () => {
       <View className="bg-white rounded-xl shadow-md p-4 space-y-3">
         <View className="flex-row justify-between">
           <Text className="text-gray-500 font-medium">Student Name</Text>
-          <Text className="font-semibold text-gray-800">101</Text>
+          <Text className="font-semibold text-gray-800">Amar</Text>
         </View>
 
         <View className="flex-row justify-between">

@@ -151,7 +151,7 @@ const parentsdashboard = () => {
       name: "Teacher Profile",
       subitem: {
         key: "teacherprofile",
-        component: <Teacherprofile />,
+        component: <Teacherprofile  teacher_id={teacher_id} />,
       },
     },
   ];
@@ -299,7 +299,7 @@ const parentsdashboard = () => {
           {/* Main menu options */}
           <View className="flex-grow">
             <Text className="text-xl font-semibold text-black mb-4">
-              Teacher Menus
+              Parent Menus
             </Text>
 
             {/* Home Button */}
