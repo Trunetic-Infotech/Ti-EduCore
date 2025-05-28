@@ -1,7 +1,7 @@
 import { View, Text, Image, FlatList, ScrollView } from "react-native";
 import React, { use } from "react";
 import { useSelector } from "react-redux";
-import defaultProfile from "../../../../../assets/images/Profile.jpg";
+import defaultProfile from "../../../../../assets/images/profile.jpg";
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
 

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import defaultProfile from "../../../../../assets/images/Profile.jpg";
+import defaultProfile from "../../../../../assets/images/profile.jpg";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import * as SecureStore from 'expo-secure-store'
