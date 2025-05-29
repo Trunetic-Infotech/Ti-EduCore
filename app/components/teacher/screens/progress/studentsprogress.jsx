@@ -17,7 +17,7 @@ const StudentsProgress = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const studentsPerPage = 12;
+  const studentsPerPage = 10;
 
   const user = useSelector((state) => state.auth.user);
 

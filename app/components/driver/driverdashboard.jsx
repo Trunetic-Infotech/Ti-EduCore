@@ -11,6 +11,7 @@ import axios from "axios";
 import { API_URL } from '@env';
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/features/authSlice";
+import { useRouter } from "expo-router";
 
 
   const driverdashboard= ()=>  {
@@ -18,7 +19,7 @@ import { setUser } from "../../../redux/features/authSlice";
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const dispatch=useDispatch();
-
+const router = useRouter();
  const fetchUser = async()=>{
     try {
       const userId = await SecureStore.getItemAsync('userId');
@@ -66,7 +67,28 @@ import { setUser } from "../../../redux/features/authSlice";
   
 
     
-  
+   const handleLogOut =  async()=>{
+    try {
+      const response = await axios.post(`${API_URL}/admin/logout`,
+        {withCredentials: true}
+      )
+
+      if(response.data.success){
+        
+        await SecureStore.deleteItemAsync('token');
+        await SecureStore.deleteItemAsync('userId');
+        Alert.alert("Logout Successfull", "User Logout Successfull");
+        router.push('/');
+       
+      }else{
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Logout Failed");
+    }
+  }
+
 
     return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
@@ -140,7 +162,7 @@ import { setUser } from "../../../redux/features/authSlice";
           </View>
 
           {/* Logout fixed at bottom */}
-          <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4">
+          <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4" onPress={handleLogOut}>
             <View>
               <Text className="text-black font-semibold text-center">
                 Logout
