@@ -127,7 +127,7 @@ const home = ({setSelectedComponent,setHomework_id, getHomeworkAndSubmissions, h
           <CardCoponets onPress={()=> setSelectedComponent(<Takeattendance />)} name="Take Attendance" className="w-[48%]" />
           <CardCoponets onPress={()=> setSelectedComponent(<StudentList setSelectedComponent={setSelectedComponent}/>)} name="Students List" className="w-[48%]" />
           <CardCoponets onPress={()=> setSelectedComponent(<Allevents/>)} name="Events" className="w-[48%]" />
-          <CardCoponets onPress={()=> setSelectedComponent(<Allstudentsmarks/>)} name="Results" className="w-[48%]" />
+          <CardCoponets onPress={()=> setSelectedComponent(<Allstudentsmarks setSelectedComponent={setSelectedComponent}/>)} name="Results" className="w-[48%]" />
           <CardCoponets onPress={()=> setSelectedComponent(<Leavesrequest/>)} name="Request Leave" className="w-[48%]" />
         </View>
 
