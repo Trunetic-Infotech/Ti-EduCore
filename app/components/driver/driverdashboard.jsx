@@ -24,6 +24,7 @@ import { PermissionsAndroid, Platform } from "react-native";
 import * as Location from "expo-location";
 import { LOCATION_TASK_NAME } from './backgroundLocationTask';  // Import the task
 import { sendLocationToServer } from './locationService'; // adjust import
+import { useRouter } from "expo-router";
 
 import * as TaskManager from 'expo-task-manager';
 
@@ -156,7 +157,31 @@ const driverdashboard = () => {
     return () => backHandler.remove();
   }, [selectedComponent]);
 
-  return (
+    
+   const handleLogOut =  async()=>{
+    try {
+      const response = await axios.post(`${API_URL}/admin/logout`,
+        {withCredentials: true}
+      )
+
+      if(response.data.success){
+        
+        await SecureStore.deleteItemAsync('token');
+        await SecureStore.deleteItemAsync('userId');
+        Alert.alert("Logout Successfull", "User Logout Successfull");
+        router.push('/');
+       
+      }else{
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Logout Failed");
+    }
+  }
+
+
+    return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-gray-100">
       {/* Custom Header */}
       <Header title="Driver Dashboard" onMenuPress={() => setIsOpen(true)} />
@@ -177,14 +202,64 @@ const driverdashboard = () => {
         <View className="absolute left-0 bottom-0 top-12 h-full w-[70%] bg-[#7b9cdb] p-4 shadow-lg z-50 flex flex-col justify-between">
           {/* Close button */}
           <ScrollView>
-            <View className="items-end mb-4">
-              <AntDesign
-                onPress={() => setIsOpen(false)}
-                name="close"
-                size={24}
-                color="black"
-              />
+          <View className="items-end mb-4">
+            <AntDesign
+              onPress={() => setIsOpen(false)}
+              name="close"
+              size={24}
+              color="black"
+            />
+          </View>
+
+          {/* Main menu options */}
+          <View className="flex-grow">
+            <Text className="text-xl font-semibold text-black mb-4">
+              Driver Menus
+            </Text>
+     <TouchableOpacity
+        className="bg-gray-200 p-3 rounded-md mb-3"
+        onPress={() => setSelectedComponent(<Driverprofile />)}
+      >
+        <Text className="text-black font-semibold text-center">Profile</Text>
+      </TouchableOpacity>
+
+
+            <TouchableOpacity
+              className="bg-gray-200 p-3 rounded-md mb-3"
+              onPress={() => {
+                setSelectedComponent(<Viewdetails/>);
+                setIsOpen(false);
+              }}
+            >
+              <View>
+                <Text className="text-black font-semibold text-center">
+                  Bus Details
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedComponent(<Studentlist/>);
+                setIsOpen(false);
+              }}
+              className="bg-gray-200 p-3 rounded-md mb-5"
+            >
+              <View>
+                <Text className="text-black font-semibold text-center">
+                  Students List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* Logout fixed at bottom */}
+          <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4" onPress={handleLogOut}>
+            <View>
+              <Text className="text-black font-semibold text-center">
+                Logout
+              </Text>
             </View>
+            </TouchableOpacity>
 
             {/* Main menu options */}
             <View className="flex-grow">
