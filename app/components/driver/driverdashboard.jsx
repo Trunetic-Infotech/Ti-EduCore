@@ -22,8 +22,8 @@ import { setUser } from "../../../redux/features/authSlice";
 import Geolocation from "react-native-geolocation-service";
 import { PermissionsAndroid, Platform } from "react-native";
 import * as Location from "expo-location";
-import { LOCATION_TASK_NAME } from './backgroundLocationTask';  // Import the task
-import { sendLocationToServer } from './locationService'; // adjust import
+import { LOCATION_TASK_NAME } from '../../../utils/backgroundLocationTask';  // Import the task
+import { sendLocationToServer } from  '../../../utils/locationService';
 import { useRouter } from "expo-router";
 
 import * as TaskManager from 'expo-task-manager';
@@ -33,6 +33,7 @@ const driverdashboard = () => {
   const [activeSection, setActiveSection] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const dispatch = useDispatch();
+  const router = useRouter();
   const user = useSelector((state) => state.auth.user);
 
   const fetchUser = async () => {
@@ -48,18 +49,29 @@ const driverdashboard = () => {
         },
       });
       if (response.data.success) {
-        dispatch(setUser(response.data.user));
-        // Alert.alert("True", "User profile Set")
+        const user = response.data.user; // ✅ define user from API response
+      dispatch(setUser(user));
+      await SecureStore.setItemAsync('user', JSON.stringify(user)); // ✅ stringify object before storing
+
+      // ✅ Start location tracking only if role is driver
+      if (user.role === 'driver') {
+        await getLocation();
+      }
       } else {
         Alert.alert("No user Found", response.data.message);
       }
     } catch (error) {
       // console.log(error, "hello");
-      Alert.alert("Error", "Internal Server Error");
+      Alert.alert("Error", "Internal Server Error....................................");
     }
   };
+
+  
+  
   const getLocation = async () => {
   // Request permissions (foreground & background)
+  console.log("Hello");
+  
   const { status } = await Location.requestForegroundPermissionsAsync();
   if (status !== 'granted') {
     alert('Foreground permission denied');
@@ -75,7 +87,7 @@ const driverdashboard = () => {
   const location = await Location.getCurrentPositionAsync({
     accuracy: Location.Accuracy.Highest,
   });
-  await sendLocationToServer(location.coords.latitude, location.coords.longitude);
+  await sendLocationToServer(location.coords.latitude, location.coords.longitude, user);
 
   // Start background location updates if not already started
   const hasStarted = await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
@@ -95,45 +107,13 @@ const driverdashboard = () => {
 };
 
 
-  const sendLocationToServer = async (latitude, longitude) => {
-    try {
-      const token = await SecureStore.getItemAsync("token");
-      const response = await axios.post(
-        `${API_URL}/location/set-drivers-location/${user.id}`,
-        {
-          latitude,
-          longitude,
-          admin_id: user.admin_id,
-          phone_number: user.phone_number,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      // console.log(response);
-      if (response.data.success) {
-        // Alert.alert("Success", response.data.message);
-      } else {
-        Alert.alert("Error", response.data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert(
-        "Error",
-        error.response?.data?.message || "Something went wrong!"
-      );
-    }
-  };
+ 
+ 
 
-  useEffect(() => {
-  const intervalId = setInterval(() => {
-    getLocation();
-  }, 5000);
+  
 
-  return () => clearInterval(intervalId);
-}, []);
+
+
 
 
   useEffect(() => {
@@ -165,7 +145,7 @@ const driverdashboard = () => {
       )
 
       if(response.data.success){
-        
+         await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME); // 👈 stop tracking
         await SecureStore.deleteItemAsync('token');
         await SecureStore.deleteItemAsync('userId');
         Alert.alert("Logout Successfull", "User Logout Successfull");
@@ -261,56 +241,7 @@ const driverdashboard = () => {
             </View>
             </TouchableOpacity>
 
-            {/* Main menu options */}
-            <View className="flex-grow">
-              <Text className="text-xl font-semibold text-black mb-4">
-                Driver Menus
-              </Text>
-              <TouchableOpacity
-                className="bg-gray-200 p-3 rounded-md mb-3"
-                onPress={() => setSelectedComponent(<Driverprofile />)}
-              >
-                <Text className="text-black font-semibold text-center">
-                  Profile
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                className="bg-gray-200 p-3 rounded-md mb-3"
-                onPress={() => {
-                  setSelectedComponent(<Viewdetails />);
-                  setIsOpen(false);
-                }}
-              >
-                <View>
-                  <Text className="text-black font-semibold text-center">
-                    Bus Details
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedComponent(<Studentlist />);
-                  setIsOpen(false);
-                }}
-                className="bg-gray-200 p-3 rounded-md mb-5"
-              >
-                <View>
-                  <Text className="text-black font-semibold text-center">
-                    Students List
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/* Logout fixed at bottom */}
-            <TouchableOpacity className="bg-[#f1a621] p-3 rounded-md mt-4">
-              <View>
-                <Text className="text-black font-semibold text-center">
-                  Logout
-                </Text>
-              </View>
-            </TouchableOpacity>
+           
           </ScrollView>
         </View>
       )}

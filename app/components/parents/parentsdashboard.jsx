@@ -115,6 +115,23 @@ const parentsdashboard = () => {
     }
   }, [user]);
 
+
+  const [selectedDriverId, setSelectedDriverId] = useState(null);
+
+useEffect(() => {
+  if (students && students.length > 0) {
+    const selectedId = parseInt(studentId);
+    const student = students.find((s) => s.id === selectedId);
+
+    if (student) {
+      setSelectedDriverId(student.driver_id);
+    } else {
+      setSelectedDriverId(students[0].driver_id);
+    }
+  }
+}, [studentId, students]);
+
+
   useEffect(() => {
     const backAction = () => {
       if (selectedComponent) {
@@ -259,7 +276,7 @@ const parentsdashboard = () => {
       name: "Map",
       subitem: {
         key: "map",
-        component: <Maps />,
+        component: <Maps  selectedId={selectedDriverId} />,
       },
     },
   ];
@@ -588,7 +605,7 @@ Student Profile Toggle Button */}
             <TouchableOpacity
               className="bg-gray-200 p-3 rounded-md mb-3"
               onPress={() => {
-                setSelectedComponent(<Maps />);
+                setSelectedComponent(<Maps selectedId={selectedDriverId} />);
                 setIsOpen(false);
               }}
             >

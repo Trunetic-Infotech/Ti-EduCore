@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { API_URL } from "@env";
 
 
-export const sendLocationToServer = async (latitude, longitude) => {
+export const sendLocationToServer = async (latitude, longitude, user) => {
     try {
       const token = await SecureStore.getItemAsync("token");
       const response = await axios.post(
@@ -20,7 +20,7 @@ export const sendLocationToServer = async (latitude, longitude) => {
           },
         }
       );
-      // console.log(response);
+      console.log(response, "Sending Location.......");
       if (response.data.success) {
         // Alert.alert("Success", response.data.message);
       } else {

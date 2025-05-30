@@ -63,6 +63,7 @@ const Login = () => {
         } else if (role === "parent") {
           router.push({ pathname: '/components/parents/parentsdashboard', params: { role } });
         } else if (role === "driver") {
+        
           router.push({ pathname: '/components/driver/driverdashboard', params: { role } });
         } else {
           Alert.alert("Invalid Data", response.data.message);

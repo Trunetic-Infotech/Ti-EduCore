@@ -171,7 +171,7 @@ const home = ({ studentId,setSelectedComponent,students, setStudentId, setTeache
           </View>
         </TouchableOpacity>
 
-        <CardCoponets name={selectedStudent.class_name} data="Class" className="w-[48%]  " />
+        <CardCoponets name={selectedStudent.class_name} data="Class" className="w-[48%]  z-[-10]" />
         <CardCoponets name={selectedStudent.division} data="Class" className="w-[48%] z-[-1] " />
 
         <CardCoponets onPress={()=>{
