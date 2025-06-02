@@ -157,14 +157,14 @@ const TeachersDashboard = () => {
         component: <AllAttendanceList />,
       },
     },
-    {
-      id: "3",
-      name: "Upload Attendance",
-      subitem: {
-        key: "uploadAttendance",
-        component: <UploadAttendance />,
-      },
-    },
+    // {
+    //   id: "3",
+    //   name: "Upload Attendance",
+    //   subitem: {
+    //     key: "uploadAttendance",
+    //     component: <UploadAttendance />,
+    //   },
+    // },
   ];
 
   const studyMetrialMap = [
@@ -245,22 +245,22 @@ const TeachersDashboard = () => {
         component: <Allstudentsmarks setSelectedComponent={setSelectedComponent} />,
       },
     },
-    {
-      id: "2",
-      name: "Verify Merks",
-      subitem: {
-        key: "verifymerks",
-        component: <Verifymerks />,
-      },
-    },
-    {
-      id: "3",
-      name: "Upload Merks",
-      subitem: {
-        key: "uploadmerks",
-        component: <Uploadmerks />,
-      },
-    },
+    // {
+    //   id: "2",
+    //   name: "Verify Merks",
+    //   subitem: {
+    //     key: "verifymerks",
+    //     component: <Verifymerks />,
+    //   },
+    // },
+    // {
+    //   id: "3",
+    //   name: "Upload Merks",
+    //   subitem: {
+    //     key: "uploadmerks",
+    //     component: <Uploadmerks />,
+    //   },
+    // },
     {
       id: "4",
       name: "Create Result",
@@ -269,25 +269,25 @@ const TeachersDashboard = () => {
         component: <Createresult />,
       },
     },
-    {
-      id: "5",
-      name: "upload Paper Pdf",
-      subitem: {
-        key: "uploadpaperpdf",
-        component: <Uploadpaperpdf />,
-      },
-    },
+    // {
+    //   id: "5",
+    //   name: "upload Paper Pdf",
+    //   subitem: {
+    //     key: "uploadpaperpdf",
+    //     component: <Uploadpaperpdf />,
+    //   },
+    // },
   ];
 
   const progressMap = [
-    {
-      id: "1",
-      name: "Homework Progress",
-      subitem: {
-        key: "homworkprogress",
-        component: <Homeworkprogress />,
-      },
-    },
+    // {
+    //   id: "1",
+    //   name: "Homework Progress",
+    //   subitem: {
+    //     key: "homworkprogress",
+    //     component: <Homeworkprogress />,
+    //   },
+    // },
     {
       id: "2",
       name: "Students Progress",
@@ -296,25 +296,25 @@ const TeachersDashboard = () => {
         component: <Studentsprogress />,
       },
     },
-    {
-      id: "3",
-      name: "Lab Attendance",
-      subitem: {
-        key: "labattendance",
-        component: <Labattendance />,
-      },
-    },
+    // {
+    //   id: "3",
+    //   name: "Lab Attendance",
+    //   subitem: {
+    //     key: "labattendance",
+    //     component: <Labattendance />,
+    //   },
+    // },
   ];
 
   const EventsMap = [
-    {
-      id: "1",
-      name: "Events",
-      subitem: {
-        key: "events",
-        component: <Addevents />,
-      },
-    },
+    // {
+    //   id: "1",
+    //   name: "Events",
+    //   subitem: {
+    //     key: "events",
+    //     component: <Addevents />,
+    //   },
+    // },
     {
       id: "2",
       name: "Events List",
@@ -326,14 +326,14 @@ const TeachersDashboard = () => {
   ];
 
   const studentsRequestMap = [
-    {
-      id: "1",
-      name: "Students Problems",
-      subitem: {
-        key: "studentsrequest",
-        component: <Studentsproblem />,
-      },
-    },
+    // {
+    //   id: "1",
+    //   name: "Students Problems",
+    //   subitem: {
+    //     key: "studentsrequest",
+    //     component: <Studentsproblem />,
+    //   },
+    // },
     {
       id: "2",
       name: "Students Questions",

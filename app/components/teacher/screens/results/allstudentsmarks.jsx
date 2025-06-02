@@ -10,6 +10,13 @@ const allstudentsmarks = ({setSelectedComponent}) => {
 
  const user = useSelector((state)=>state.auth.user);
   const [allprogress, setAllProgress] = useState([]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const fileteredProgress = allprogress.filter(progress => 
+    progress.student_name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   const getExamResults = async()=>{
     try {
       const token = await SecureStore.getItem("token");
@@ -47,6 +54,7 @@ const allstudentsmarks = ({setSelectedComponent}) => {
         <TextInput
           className="p-2 pl-10 border border-[#305495] rounded-xl w-[75%] bg-white"
           placeholder="Search...."
+          onChangeText={setSearchQuery}
         />
         <Feather
           name="search"
@@ -58,7 +66,7 @@ const allstudentsmarks = ({setSelectedComponent}) => {
 
       {/* Card */}
       <View className="bg-white rounded-xl shadow-md p-4 space-y-3">
-       {allprogress.map((progress, index) => {
+       {fileteredProgress.map((progress, index) => {
   return (
     <View key={index} className="mb-6 border-b border-gray-200 pb-4">
       <View className="flex-row justify-between">
