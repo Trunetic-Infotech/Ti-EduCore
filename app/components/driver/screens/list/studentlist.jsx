@@ -12,19 +12,10 @@ const StudentList = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
 
-  //  const [student, setStudent] = useState([]);
 
   const user = useSelector((state) => state.auth.user);
 
-  const student = [
-    { id: '1', name: 'Asad Shaikh', class: '1', division: 'A', phone: '9876543210', email: 'asad@example.com' },
-    { id: '2', name: 'Pooja Verma', class: '2', division: 'B', phone: '9123456789', email: 'pooja@example.com' },
-    { id: '3', name: 'Rahul Kumar', class: '3', division: 'C', phone: '9988776655', email: 'rahul@example.com' },
-    { id: '4', name: 'Sneha Patil', class: '4', division: 'A', phone: '9871234560', email: 'sneha@example.com' },
-    { id: '5', name: 'Anjali Singh', class: '5', division: 'B', phone: '9123987654', email: 'anjali@example.com' },
-    { id: '6', name: 'Rohit Sharma', class: '6', division: 'C', phone: '9012345678', email: 'rohit@example.com' },
-    // Add more if needed
-  ];
+
 
   const totalPage = Math.ceil(students.length / studentsPerPage);
 

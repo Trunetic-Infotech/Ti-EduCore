@@ -14,6 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { role } = useLocalSearchParams();
+  //  const { Role } = router.params;
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -125,7 +126,13 @@ const Login = () => {
               </Pressable>
               <Text className="font-bold">Remember Me</Text>
             </View>
-            <Link href="forgotpassword" className="font-bold">Forgot Password ?</Link>
+                 <Link
+  href={`/forgotpassword?Role=${role}`}
+  className="font-bold"
+  onClick={() => console.log("Role:", role)}
+>
+  Forgot Password?
+</Link>
           </View>
 
           <TouchableOpacity onPress={handleLogin} className="my-4">
